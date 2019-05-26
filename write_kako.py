@@ -63,6 +63,8 @@ class WriteKako:
             self.codes.append(cd)
             i += 1
 
+        con.close()
+
     def write_kako(self):
         for data in self.kakodata :
             for code in  self.codes :
