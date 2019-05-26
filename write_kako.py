@@ -8,7 +8,7 @@
 #受注実績データファイル名
 FILEK="kako_juchu.csv" #加工後受注データ
 FILEC="tfc_code.csv"  #TFCコードファイル
-FILES="../tfc_sql/tfc.sqlite"  #コードDBファイル
+FILES="tfc.sqlite"  #コードDBファイル
 FILEF="hukla_tfc_fab.csv" #ファブリック照合ファイル
 FILEOUT = "po_lines_keep.csv" #書き出しファイル
 
@@ -24,6 +24,8 @@ A_6 = 6 #id
 import csv
 import code
 import sqlite3
+import pandas as pd
+from pandas import DataFrame, Series
 
 class WriteKako:
     def __init__(self):
@@ -52,14 +54,14 @@ class WriteKako:
 
     #コードファイル読み込んで、csvリスト(data) に格納
     def read_code(self, filename):
-        with open(filename, "r") as f:
-            reader = csv.reader(f)
-            # ファイルのヘッダーをnext メソッドで１行飛ばす
-            self.head_line = next(reader)
-            # Codeクラスを生成して格納
-            for row in reader:
-                cd = code.Code(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) 
-                self.codes.append(cd)
+        con = sqlite3.connect(FILES)
+        df = pd.read_sql("select * from tfc_code", con)
+        i=0
+        while i < len(df) :
+            row = df.iloc[i]
+            cd = code.Code(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) 
+            self.codes.append(cd)
+            i += 1
 
     def write_kako(self):
         for data in self.kakodata :
