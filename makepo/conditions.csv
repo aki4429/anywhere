@@ -1,0 +1,10 @@
+id|shipment_per|shipto_1|shipto_2|shipto_3|shipto_4|shipto_5|via|forwarder|trade_term|paynment|insurance|comment
+sea_nanno|Vessel|The address listed above|||||Nagoya Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|To Hukla Japan/Nanno 
+sea_fukuhaku|Vessel|The address listed above|||||HAKATA Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|To Fukuhaku Direct
+dhl_nanno|DHL(Courier)|Hukla Japan Inc. / Nanno Factory|240 Yoshida, Nanno-cho |Kaizu-shi, Gifu, Japan 503-0536 |attn. to Akiyoshi Oda |Tel: +81-(0)50-3135-9363 |NAGOYA air-port|DHL|Ex Works|Remittance in 30 days each month|To be covered by us|For Hukla Japan/Nanno Fac.
+nic_hakata|Vessel|The address listed above|||||HAKATA Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|To NIC Hakata Direct
+fujiei_nagoya |Vessel|The address listed above|||||NAGOYA Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|To Fujiei NAGOYA Direct 
+dhl_nanno_ddp|DHL(Courier)|Hukla Japan Inc. / Nanno Factory|240 Yoshida, Nanno-cho |Kaizu-shi, Gifu, Japan 503-0536 |attn. to Akiyoshi Oda |Tel: +81-(0)50-3135-9363 |NAGOYA air-port|DHL|DDP|Remittance in 30 days each month|To be covered by us|For Hukla Japan/Nanno Fac.
+bellacasa_hakata |Vessel|The address listed above|||||HAKATA Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|for f-grip Direct
+sapporo_furni_tomakomai |Vessel|The address listed above|||||TOMAKOMAI Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|for  Sapporo Furnishing Direct
+fujikoshi_nagoya|Vessel|The address listed above|||||NAGOYA Port|Tradia|FOB Taicang|Remittance in 30 days each month|To be covered by us|To Fujikoshi NAGOYA Direct

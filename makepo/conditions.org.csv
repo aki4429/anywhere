@@ -1,0 +1,4 @@
+id, shipment_per, shipto, via, forwarder, trade_term, paynment, insurance, comment
+tfc_sea_nanno, Vessel, The address listed above, Nagoya Port, Tradia, FOB Taicang, Remittance in 30 days each month,To be covered by us, For Hukla Japan/Nanno Factory
+tfc_sea_fukuhaku, Vessel, The address listed above, HAKATA Port, Tradia, FOB Taicang, Remittance in 30 days each month,To be covered by us, For Fukuhaku
+tfc_dhl_nanno, DHL(Courier), "Hukla Japan Inc. \n Nanno Factory \n 240 Yoshida\, \n Nanno-cho\, Kaizu\, Gifu\, Japan 503-0536 \n attn. to Akiyoshi Oda \n Tel: +81-(0)50-3135-9363 ", NAGOYA air-port, DHL, Ex Works, Remittance in 30 days each month,To be covered by us, For Hukla Japan/Nanno Fac.
