@@ -22,12 +22,15 @@ KENTOF = 'kento.csv'
 ZHYO = 'zaiko_hyo.csv'
 KHYO = 'kento_hyo.csv'
 KENTO_C = 'kentohyo.csv' #検討表のコード並び
+ZEXCEL = 'TFC_zaiko.xlsx'
                 
 import zaiko_read
 import make_yotei
 import pandas as pd
 from pandas import DataFrame, Series
 import numpy as np
+import openpyxl
+import mhparse as mh
 
 import sqlite3
 
@@ -47,13 +50,18 @@ class WriteZaiko:
                 zaiko_file_name = ZAIKOF
                 hyo_file_name = ZHYO
                 ans = 'q'
-            else:
+            elif ans == 2:
                 #DB tfc_codeから 検討フラグがあるデータをゲット
                 print("検討表を作成します")
                 data = self.get_kento(cur)
                 zaiko_file_name = KENTOF
                 hyo_file_name = KHYO
                 ans = 'q'
+            else:
+                print("番号を選んでください。")
+                input("return to continue")
+                continue
+
 
         data = self.order_by_hcode(data)
         data = self.order_by_cat(data)
@@ -74,9 +82,12 @@ class WriteZaiko:
         if hyo_file_name == KHYO:
             kento_code = pd.read_csv(KENTO_C, index_col='品目CD')
             hyo = kento_code.join(hyo, how='left')
+        elif hyo_file_name == ZHYO:
+            self.write_excel(hyo, k.get_date(), y)
 
-        print('hyo_file_name',hyo_file_name)
-        input()
+
+        #print('hyo_file_name',hyo_file_name)
+        #input()
         hyo.to_csv(hyo_file_name, encoding='CP932')
         #hyo.to_csv("kento_hyo.csv")
 
@@ -126,6 +137,95 @@ class WriteZaiko:
                     ordered_data.append(d)
 
         return ordered_data
+
+
+    def write_excel(self, hyo, kijunbi, yotei):
+        wb = openpyxl.load_workbook(ZEXCEL)
+        sheet = wb['zaiko']
+        sheet['B1'] = kijunbi
+        #コード記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            sheet.cell(row=i, column=1, value = hyo.index[j]) 
+            i += 1
+            j += 1
+       
+        #在庫記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            sheet.cell(row=i, column=2, value = hyo.iloc[j,0]) 
+            i += 1
+            j += 1
+       
+        #受注記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            sheet.cell(row=i, column=3, value = hyo.iloc[j,1]) 
+            i += 1
+            j += 1
+       
+        #有効残記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            sheet.cell(row=i, column=4, value = '=B{0}-C{0}'.format(i)) 
+            i += 1
+            j += 1
+       
+        #カテゴリー記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            sheet.cell(row=i, column=5, value = hyo.iloc[j,2]) 
+            i += 1
+            j += 1
+       
+        #予定入荷数記入
+        j=0
+        i=4 #4行目からスタート
+        while i < len(hyo):
+            k = 3
+            while k < len(hyo.columns) :
+                sheet.cell(row=i, column=3+k, value = hyo.iloc[j,k]) 
+                k += 1
+            i += 1
+            j += 1
+       
+        #南濃取り込み日記入
+        gyo=3 #3行目に記入
+        j=3 #index 3 以降予定データ
+        #６列目からスタート = j+3
+        while j < len(hyo.columns):
+            sheet.cell(row=gyo, column=j+3, value = hyo.columns[j]) 
+            j += 1
+       
+        #ETD記入
+        gyo=2 #2行目に記入
+        i=0
+        j=3 #index 3 以降予定データ
+        #６列目からスタート = j+3
+        while j < len(hyo.columns):
+            sheet.cell(row=gyo, column=j+3, value = yotei.etds[i]) 
+            j += 1
+            i += 1
+       
+        #PO#, INV#記入
+        i=0
+        gyo=1 #1行目に記入
+        j=3 #index 3 以降予定データ
+        #６列目からスタート = j+3
+        while j < len(hyo.columns):
+            sheet.cell(row=gyo, column=j+3, value = yotei.pos[i]) 
+            j += 1
+            i += 1
+       
+       
+       
+        wb.save('TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi)))
+        
 
 
 

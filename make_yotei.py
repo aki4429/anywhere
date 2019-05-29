@@ -51,7 +51,7 @@ class MakeYotei:
         print("="*30)
         for yotei in yoteis:
             print(*yotei)
-            data.append([yotei[0], yotei[1], yotei[2]])
+            data.append([yotei[0], yotei[1], yotei[2], yotei[3], yotei[4]])
 
         return data
 
@@ -63,7 +63,7 @@ class MakeYotei:
         print("="*30)
         for yotei in yoteis:
             print(*yotei)
-            data.append([yotei[0], yotei[1], yotei[2]])
+            data.append([yotei[0], yotei[1], yotei[2], yotei[3], yotei[4]])
 
         return data
 
@@ -76,13 +76,33 @@ class MakeYotei:
             print(*yotei)
 
     def kako_data(self, data):
-        #日付を取り出して重複を除いてソート
+        #南濃取り込み日付を取り出して重複を除いてソート
         hiduke =[]
         for d in data:
             hiduke.append(d[2])
             
         hiduke = sorted(set(hiduke))
         print("hiduke",hiduke)
+        
+        #南濃取り込み日付が該当するETDをゲット
+        self.etds = []
+        for hi in hiduke:
+            flag =0
+            for d in data:
+                if d[2] == hi and flag == 0 :
+                    self.etds.append(d[3])
+                    flag = 1
+
+
+        #南濃取り込み日付が該当するPO#または、INV#をゲット
+        self.pos = []
+        for hi in hiduke:
+            flag =0
+            for d in data:
+                if d[2] == hi and flag == 0 :
+                    self.pos.append(d[4])
+                    flag =1
+
 
         #コードを取り出して重複を除いてソート
         codes =[]
@@ -115,4 +135,6 @@ class MakeYotei:
         
 
 #m= MakeYotei()
+#print('etds',m.etds)
+#print('pos',m.pos)
 
