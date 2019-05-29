@@ -90,7 +90,7 @@ class MakeYotei:
             codes.append(d[0])
             
         codes = sorted(set(codes))
-        print("code",codes)
+        #print("code",codes)
         
         #コードと日付をキーにしてネストした予定辞書を初期化します。
         yotei={}

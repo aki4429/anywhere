@@ -38,9 +38,10 @@ class WriteZaiko:
 
         ans = ''
         while ans != 'q':
-            ans = input(MENU)
+            ans = int(input(MENU))
             if ans == 1:
                 print("在庫表を作成します")
+                input()
                 #DB tfc_codeテーブルから在庫フラグがあるデータをゲット
                 data = self.get_zaiko(cur)
                 zaiko_file_name = ZAIKOF
@@ -74,6 +75,8 @@ class WriteZaiko:
             kento_code = pd.read_csv(KENTO_C, index_col='品目CD')
             hyo = kento_code.join(hyo, how='left')
 
+        print('hyo_file_name',hyo_file_name)
+        input()
         hyo.to_csv(hyo_file_name, encoding='CP932')
         #hyo.to_csv("kento_hyo.csv")
 
