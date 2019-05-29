@@ -10,7 +10,7 @@ from pandas import DataFrame, Series
 FILEN = "tfc.sqlite"
 FABLIST = "fab.csv"
 #FILEN = "//172.16.161.24/生産管理部/TFCDB/tfc.sqlite"
-OUTFILE = "../tfc/po_lines_keep.csv"
+OUTFILE = "po_lines_keep.csv"
 
 MENU="(e)編集/(d)削除/(c)コピー・編集/(s)布地展開(クローン作成)/(p)発注リストに追加/(q)編集中止"
 
@@ -63,7 +63,7 @@ class EditSqlcode:
                 self.id_list.append(i)
                 j+=1
 
-            print('self.idlist', self.id_list)
+            #print('self.idlist', self.id_list)
             return kekka
             #return self.show_kekka(kekka)
 
@@ -151,27 +151,28 @@ class EditSqlcode:
             elif resp == 'p':
                 qty = input("発注数量を入力してください。:")
                 om = input("受注番号をを入力してください。:")
-                self.write_poline(OUTFILE, self.fablist, om, qty, kekka)
+                self.write_poline(OUTFILE, self.fablist, om, qty, code, idn)
 
         return ans
 
-    def write_poline(self, filename, fablist, om, qty, result):
+    def write_poline(self, filename, fablist, om, qty, code, idn):
+        print('code', code)
         poline = []
-        poline.append(result[1]) #品番
-        poline.append(result[2]) #item
-        poline.append(result[3]) #description
-        poline.append(result[4]) #remark
+        poline.append(code['hinban']) #品番
+        poline.append(code['item']) #item
+        poline.append(code['description']) #description
+        poline.append(code['remarks']) #remark
         poline.append(qty)
-        poline.append(result[5]) #unit
-        poline.append(result[6]) #u.price
+        poline.append(code['unit']) #unit
+        poline.append(code['uprice']) #u.price
         poline.append("")
         poline.append("")
-        poline.append(self.make_our_item(fablist, result[1]))
+        poline.append(self.make_our_item(fablist, code['hinban']))
         poline.append("")
         poline.append(om)
         poline.append("")
-        poline.append(result[8]) #vol
-        poline.append(result[0]) #id
+        poline.append(code['vol']) #vol
+        poline.append(idn) #id
         #self.show_poline(poline)
         #print(poline)
         self.save_poline(filename, poline)

@@ -13,7 +13,7 @@ import sqlite3
 #file_name = tools.get_latest_modified_file_path(os.curdir, "*xl*")
 POLINES = "../po_lines_keep.csv"
 PONOFILE = "pono.txt"
-TFCS = "../../tfc_sql/tfc.sqlite"
+TFCS = "../tfc.sqlite"
 
 ITEMROWBEGIN = 16 #アイテム行は１から数えて何番目から
 ITEMCOLUMNBEGIN = 2 #アイテム列は、A=１から数えて何番目

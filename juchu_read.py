@@ -5,7 +5,7 @@
 
 #受注実績データファイル名
 #FILENAME="juchu/juchu20190409-15.csv"
-FILENAME="juchu/juchu20190416-22.csv"
+#FILENAME="juchu/juchu20190416-22.csv"
 CODEFILE="tfc_code.csv"
 FILEOUT = "kako_juchu.csv"
 SQLF = "tfc.sqlite"

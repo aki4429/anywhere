@@ -7,7 +7,7 @@
 
 #受注実績データファイル名
 FILEK="kako_juchu.csv" #加工後受注データ
-FILEC="tfc_code.csv"  #TFCコードファイル
+#FILEC="tfc_code.csv"  #TFCコードファイル
 FILES="tfc.sqlite"  #コードDBファイル
 FILEF="hukla_tfc_fab.csv" #ファブリック照合ファイル
 FILEOUT = "po_lines_keep.csv" #書き出しファイル
@@ -34,7 +34,7 @@ class WriteKako:
         self.codes = [] #TFCコードデータ格納用
         self.read_kako(FILEK) #加工受注データ読み込み
         self.read_fab(FILEF) #ファブリック変換データ
-        self.read_code(FILEC) #TFCコード読み込み
+        self.read_code() #TFCコード読み込み
 
     #加工後受注ファイル読み込み
     def read_kako(self, filename):
@@ -53,7 +53,7 @@ class WriteKako:
                 self.fablist.append(row)
 
     #コードファイル読み込んで、csvリスト(data) に格納
-    def read_code(self, filename):
+    def read_code(self):
         con = sqlite3.connect(FILES)
         df = pd.read_sql("select * from tfc_code", con)
         i=0
