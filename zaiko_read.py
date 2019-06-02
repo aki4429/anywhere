@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-FILE_ZEN="zaiko_d/kento20190516.csv"
+FILE_ZEN="zaiko_d/kento20190530.csv"
 FILE_COV="zaiko_d/cover_zaiko.csv"
 FILE_NUNOHIN="zaiko_d/nunoji_hinban.csv"
 SFILE = "tfc.sqlite"

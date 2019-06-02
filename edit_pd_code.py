@@ -197,7 +197,8 @@ class EditSqlcode:
             if ans != 'q' and ans.isdigit() :
                 #選択絡むの値をreadline の履歴に登録します。
                 print("kekka", self.df.loc[idn, colnames[int(ans)]])
-                readline.add_history(self.df.loc[idn, colnames[int(ans)]])
+                if int(ans) <12 :
+                    readline.add_history(self.df.loc[idn, colnames[int(ans)]])
 
                 newdata = input("新しい内容を入力してください。:")
                 self.df.loc[idn, colnames[int(ans)]] = newdata

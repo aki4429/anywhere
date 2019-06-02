@@ -7,7 +7,7 @@
 
 DBFILE='tfc.sqlite'
 
-CAT_ORDER = ['布地','ﾇｰﾄﾞ','ｶﾊﾞｰ','INCOON', 'INCOON BED', '脚','ｸｯｼｮﾝ', '旧モデル']
+CAT_ORDER = {'布地':1,'ﾇｰﾄﾞ':2,'ｶﾊﾞｰ':3,'INCOON':4, 'INCOON BED':5, '脚':6,'ｸｯｼｮﾝ':7, '旧モデル':8}
 
 MENU ="""
 作成する表を選んでください。
@@ -31,6 +31,8 @@ from pandas import DataFrame, Series
 import numpy as np
 import openpyxl
 import mhparse as mh
+import datetime
+import dateutil.parser
 
 import sqlite3
 
@@ -44,16 +46,16 @@ class WriteZaiko:
             ans = int(input(MENU))
             if ans == 1:
                 print("在庫表を作成します")
-                input()
+                #input()
                 #DB tfc_codeテーブルから在庫フラグがあるデータをゲット
-                data = self.get_zaiko(cur)
+                df = self.get_zaiko(con)
                 zaiko_file_name = ZAIKOF
                 hyo_file_name = ZHYO
                 ans = 'q'
             elif ans == 2:
                 #DB tfc_codeから 検討フラグがあるデータをゲット
                 print("検討表を作成します")
-                data = self.get_kento(cur)
+                df = self.get_kento(con)
                 zaiko_file_name = KENTOF
                 hyo_file_name = KHYO
                 ans = 'q'
@@ -63,14 +65,11 @@ class WriteZaiko:
                 continue
 
 
-        data = self.order_by_hcode(data)
-        data = self.order_by_cat(data)
-
-        n = np.array(data)
-        df = DataFrame(n[:,0],index=n[:,1], columns=['cat'])
-
-        #print(self.df)
+        print('df', df)
+        input()
         df.to_csv(zaiko_file_name)
+        
+        df = self.order_by_code(df)
 
         k = zaiko_read.ZaikoRead()
 
@@ -96,47 +95,71 @@ class WriteZaiko:
             for row in d: 
                 print(row[0], row[1])
 
-    def get_zaiko(self, cur):
+    def get_zaiko(self, con):
         #在庫フラグがあるデータをゲット
-        cur.execute("select cat, hcode from tfc_code where zaiko=1")
-        data = cur.fetchall()
+        #cur.execute("select cat, hcode from tfc_code where zaiko=1")
+        #data = cur.fetchall()
+        #return data
+        data = pd.read_sql("select hcode, cat from tfc_code where zaiko=1",\
+                con, index_col = 'hcode')
+
         return data
 
-    def get_kento(self, cur):
+    def get_kento(self, con):
         #検討フラグがあるデータをゲット
-        cur.execute("select cat, hcode from tfc_code where kento=1")
-        data = cur.fetchall()
+        data = pd.read_sql("select hcode, cat from tfc_code where kento=1",\
+                con, index_col = 'hcode')
+
         return data
 
-    def order_by_hcode(self, data):
-        code_data=[]
-        sorted_data = []
-        for d in data:
-            code_data.append(d[1])
+    def order_by_code(self, df):
+        #df DataFrame の index にしているコードをlistで抽出
+        codes = list(df.index.values)
+        #モデル名末尾のIを削除
+        removed =[]
+        for code in codes:
+            removed.append(code.replace("I-", "-"))
 
-        #ファブリックがあれば、ファブリック順に
-        #1)モデル名、 2) ファブリック 3) ピース
-        fabfirst = lambda val : (val.replace("I-", "-").split("-")[0], val.split(" ")[1] if len(val.split(" ")) > 1 else "")
+        codes = removed
+        models =[]
+        items =[]
+        fabs =[]
 
-        code_data.sort(key = fabfirst)
+        for code in codes:
+            #-で区切って左がモデル名
+            models.append(code.split('-')[0])
+            if len(code.split('-')) >=2: 
+                #-の右があれば、スペースで区切って左がアイテム
+                items.append(code.split('-')[1].split(' ')[0])
+                flag = 0
+                #-の右をスペースで区切って右があれば、
+                if len(code.split('-')[1].split(' ')) >=2:
+                    for fab in code.split('-')[1].split(' '):
+                        if '/' in fab:
+                            # / を含む項目があるときfabs に追加
+                            fabs.append(fab)
+                            flag = 1
+                if flag == 0:
+                    fabs.append('')
+            else:
+                items.append('')
+                fabs.append('')
+                
+        df['model'] = models
+        df['item'] = items
+        df['fab'] = fabs
 
-        for cd in code_data:
-            for d in data:
-                if d[1] == cd:
-                    sorted_data.append(d)
+        #CAT_ORDER順に並べ替える
+        catnums = []
+        for catname in df.cat.values:
+            catnums.append( CAT_ORDER[catname] )
 
-        return sorted_data            
+        df['catn'] = catnums
 
+        df.sort_values(['catn', 'model', 'fab', 'item'], inplace = True)
+        df.drop(['catn', 'model', 'fab', 'item'], axis = 1, inplace = True)
 
-    #CAT_ORDER順に並べ替える
-    def order_by_cat(self, data):
-        ordered_data=[]
-        for cat in CAT_ORDER:
-            for d in data:
-                if d[0] == cat:
-                    ordered_data.append(d)
-
-        return ordered_data
+        return df
 
 
     def write_excel(self, hyo, kijunbi, yotei):
@@ -163,7 +186,7 @@ class WriteZaiko:
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=3, value = hyo.iloc[j,1]) 
+            sheet.cell(row=i, column=3, value = hyo.iloc[j,1] )
             i += 1
             j += 1
        
@@ -199,7 +222,7 @@ class WriteZaiko:
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = hyo.columns[j]) 
+            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(hyo.columns[j])) 
             j += 1
        
         #ETD記入
@@ -208,7 +231,7 @@ class WriteZaiko:
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = yotei.etds[i]) 
+            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(yotei.etds[i])) 
             j += 1
             i += 1
        
