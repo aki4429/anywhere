@@ -6,7 +6,6 @@
 #受注実績データファイル名
 #FILENAME="juchu/juchu20190409-15.csv"
 #FILENAME="juchu/juchu20190416-22.csv"
-CODEFILE="tfc_code.csv"
 FILEOUT = "kako_juchu.csv"
 SQLF = "tfc.sqlite"
 
@@ -33,6 +32,7 @@ class JuchuRead:
         self.data = data_kako.kako_add(self.data)
         self.data = data_kako.sum(self.data)
         self.data = data_kako.check(self.data, self.codes)
+        #print('self.data:', self.data)
         self.save_juchu(self.data)
 
     def read(self, filename):
@@ -45,13 +45,6 @@ class JuchuRead:
                 if h.is_byorder() and not h.jogai() :
                     self.data.append([h.make_code(),row[A_3],
                         row[A_4],row[A_5],int(float(row[A_6]))])
-
-    def read_cd(self, filename):
-        with open(filename, 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader)
-            for row in reader: 
-                self.codes.append(row)
 
     def read_sql(self, filename):
         con=sqlite3.connect(filename)

@@ -9,7 +9,7 @@ PIE=slice(11,17) #ピース
 PAR=slice(17,20) #パーツ
 IRO=slice(20,24) #色
 NU1=slice(24,31) #布地1
-NU2=slice(31,38) #布地2
+NU2=slice(31,39) #布地2
 TOK=slice(39,40) #特
 
 class Hinmoku:
@@ -44,11 +44,15 @@ class Hinmoku:
         #次のコードで始まるものは除外
         if self.hin.startswith("BLS"):
             return True
+        elif self.hin.startswith("BIVOS"):
+            return True
         elif self.hin.startswith("BRU"):
             return True
         elif self.hin.startswith("F780"):
             return True
         elif self.hin.startswith("N264"):
+            return True
+        elif self.hin.startswith("N528"):
             return True
         elif self.hin.startswith("N666"):
             return True

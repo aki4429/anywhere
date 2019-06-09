@@ -88,11 +88,11 @@ def kako_add(data):
         #CH907でコンビ布地の指定がない場合、おなじ布地名をコンビ名と
         #して追加。(ダブルでコードを選ばないように
         #ただし、35/37はそのまま。
-        if "CH907" in row[0]:
-            if "CH907-35" not in row[0] and "CH907-37" not in row[0] and \
-             "C " not in row[0]: 
-                if len(row[0].split(" ")) < 3:
-                    row[0] = row[0] + " " + row[0].split(" ")[1]
+        #if "CH907" in row[0]:
+        #    if "CH907-35" not in row[0] and "CH907-37" not in row[0] and \
+        #     "C " not in row[0]: 
+        #        if len(row[0].split(" ")) < 3:
+        #            row[0] = row[0] + " " + row[0].split(" ")[1]
 
         #CH261は、03を03+17コードに変換して、17をマイナス。
         #セットで注文くる前提の処理
@@ -120,7 +120,7 @@ def kako_add(data):
 #品目CD row[0] と 受注# row[1] が同じならば、数量row[4]を加算
 def sum(data):
     #品番順受注番号順に並べ替え
-    data = sorted(data, key = lambda x:x[0])
+    #data = sorted(data, key = lambda x:x[0])
     data = sorted(data, key = lambda x:x[1])
     #コードrow[0]+ 受注番号row[1] の辞書を作る
     new_dic = {}
@@ -151,8 +151,10 @@ def check(data, codes):
         flag="NO"
         idn=""
         for code in codes:
-            #if row[0] in code[0] :
-            if row[0] in code[1] :
+            #if row[0] in code[1] :
+            if row[0] == code[1] :
+                #print('row[0]', row[0])
+                #print('code[1]', code[0], code[1])
                 if flag == "NO":
                     flag = "ok"
                     idn = code[0]
