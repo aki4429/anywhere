@@ -51,6 +51,7 @@ class WriteZaiko:
                 df = self.get_zaiko(con)
                 zaiko_file_name = ZAIKOF
                 hyo_file_name = ZHYO
+                df = self.order_by_code(df, ans)
                 ans = 'q'
             elif ans == 2:
                 #DB tfc_codeから 検討フラグがあるデータをゲット
@@ -58,6 +59,7 @@ class WriteZaiko:
                 df = self.get_kento(con)
                 zaiko_file_name = KENTOF
                 hyo_file_name = KHYO
+                df = self.order_by_code(df, ans)
                 ans = 'q'
             else:
                 print("番号を選んでください。")
@@ -69,7 +71,6 @@ class WriteZaiko:
         input()
         df.to_csv(zaiko_file_name)
         
-        df = self.order_by_code(df, ans)
 
         k = zaiko_read.ZaikoRead()
 
