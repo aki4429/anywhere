@@ -31,4 +31,4 @@ class JuchuReader:
         bango = int(input("番号を選んでください:"))
         return bango
 
-j = JuchuReader()
+#j = JuchuReader()

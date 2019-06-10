@@ -259,4 +259,4 @@ class WriteZaiko:
 
 
 
-w = WriteZaiko()
+#w = WriteZaiko()
