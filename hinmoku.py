@@ -62,6 +62,8 @@ class Hinmoku:
             return True
         elif self.hin.startswith("SLT"):
             return True
+        elif self.hin.startswith("T323"):
+            return True
         elif self.hin.startswith("T523"):
             return True
         elif self.hin.startswith("TDS"):

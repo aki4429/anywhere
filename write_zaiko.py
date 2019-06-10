@@ -69,7 +69,7 @@ class WriteZaiko:
         input()
         df.to_csv(zaiko_file_name)
         
-        df = self.order_by_code(df)
+        df = self.order_by_code(df, ans)
 
         k = zaiko_read.ZaikoRead()
 
@@ -112,7 +112,7 @@ class WriteZaiko:
 
         return data
 
-    def order_by_code(self, df):
+    def order_by_code(self, df, ans):
         #df DataFrame の index にしているコードをlistで抽出
         codes = list(df.index.values)
         #モデル名末尾のIを削除
@@ -149,15 +149,16 @@ class WriteZaiko:
         df['item'] = items
         df['fab'] = fabs
 
-        #CAT_ORDER順に並べ替える
-        catnums = []
-        for catname in df.cat.values:
-            catnums.append( CAT_ORDER[catname] )
+        #在庫表作成の場合、CAT_ORDER順に並べ替える
+        if ans == 1:
+            catnums = []
+            for catname in df.cat.values:
+                catnums.append( CAT_ORDER[catname] )
 
-        df['catn'] = catnums
+            df['catn'] = catnums
 
-        df.sort_values(['catn', 'model', 'fab', 'item'], inplace = True)
-        df.drop(['catn', 'model', 'fab', 'item'], axis = 1, inplace = True)
+            df.sort_values(['catn', 'model', 'fab', 'item'], inplace = True)
+            df.drop(['catn', 'model', 'fab', 'item'], axis = 1, inplace = True)
 
         return df
 
