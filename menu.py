@@ -42,7 +42,7 @@ class Menu:
             print("手順(2) 手配表をアップロードしてください。")
             w = write_zaiko.WriteZaiko()
         elif num == 2:
-            j = juchu_rader.JuchuReader()
+            j = juchu_reader.JuchuReader()
 
         #elif num == 3:
             #t = tfc_edit_pd.Tfc
