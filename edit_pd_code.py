@@ -6,6 +6,7 @@ import csv
 import readline
 import pandas as pd
 from pandas import DataFrame, Series
+import os
 
 FILEN = "tfc.sqlite"
 FABLIST = "fab.csv"
@@ -14,7 +15,7 @@ OUTFILE = "po_lines_keep.csv"
 
 MENU="(e)編集/(d)削除/(c)コピー・編集/(s)布地展開(クローン作成)/(p)発注リストに追加/(q)編集中止"
 
-class EditSqlcode:
+class EditPdCode:
     def __init__(self):
         #DataFrame の表示拡大
         pd.set_option('display.max_columns', 100)
@@ -34,7 +35,8 @@ class EditSqlcode:
         while(moji != 'q'):
             #self.df = pd.read_sql_query("select * from tfc_code", con=self.con, index_col = 'id' )
             ans = ''
-            #print("=========検索メニュー=========")
+            os.system('clear')
+            print("=========TFC コード検索メニュー=========")
             moji = input("検索文字を入力してください。(終了=q):")
             while moji != 'q' and ans != 'q':
                 kekka = self.get_kekka(moji)
@@ -55,6 +57,7 @@ class EditSqlcode:
         kekka = self.df[self.df.hinban.str.contains(moji)]
         if len(kekka) == 0:
             print("検索結果はゼロでした。")
+            input()
             return []
         else:
             j = 0
@@ -252,4 +255,4 @@ class EditSqlcode:
         
         return our_item
    
-e = EditSqlcode()
+#e = EditSqlcode()

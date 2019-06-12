@@ -56,4 +56,4 @@ class InvStatus:
         deliver = deliver[:4] + "-" + deliver[4:6] + "-" + deliver[6:8]
         cur.execute("UPDATE inv SET delivery = ? where id = ?",(deliver,idn))
 
-s = InvStatus()
+#s = InvStatus()

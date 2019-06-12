@@ -102,5 +102,5 @@ class PoStatus:
 
 
 
-s = PoStatus()
+#s = PoStatus()
 

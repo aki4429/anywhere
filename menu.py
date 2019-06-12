@@ -4,6 +4,9 @@
 
 import write_zaiko
 import juchu_reader
+import edit_pd_code
+import po_status
+import inv_status
 import os
 
 MENU_TITLE = """-------------------------------
@@ -43,6 +46,12 @@ class Menu:
             w = write_zaiko.WriteZaiko()
         elif num == 2:
             j = juchu_reader.JuchuReader()
+        elif num == 3:
+            e = edit_pd_code.EditPdCode()
+        elif num == 4:
+            p = po_status.PoStatus()
+        elif num == 5:
+            inv = inv_status.InvStatus()
 
         #elif num == 3:
             #t = tfc_edit_pd.Tfc
