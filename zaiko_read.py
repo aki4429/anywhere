@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-FILE_ZEN="zaiko_d/99997-99999kento.csv"
+#FILE_ZEN="zaiko_d/99997-99999kento.csv"
 FILE_COV="zaiko_d/cover_zaiko.csv"
 FILE_NUNOHIN="zaiko_d/nunoji_hinban.csv"
 SFILE = "tfc.sqlite"
@@ -13,13 +13,23 @@ import sqlite3
 import pandas as pd
 from pandas import DataFrame, Series
 import numpy as np
+import os
 
 class ZaikoRead:
     def __init__(self):
+        self.result = 0
         data = []
         zai_data=[]
         shiire_data=[]
-        data = self.read(FILE_ZEN)
+        file_name = self.get_kento_file()
+        if file_name == None :
+            return None
+        else:
+            self.result = 1
+            data = self.read(file_name)
+
+        self.file_name = file_name
+
         #オリジナル布地番号/フクラコード変換用データ読み込み
         nunodata=self.read_nunohin(FILE_NUNOHIN)
 
@@ -173,7 +183,7 @@ class ZaikoRead:
 
     def get_date(self):
         kijunbi =""
-        csvfile = open(FILE_ZEN, 'r', encoding='CP932')
+        csvfile = open(self.file_name, 'r', encoding='CP932')
         reader = csv.reader(csvfile)
         next(reader)
         kijunbi = next(reader)[18]
@@ -203,6 +213,22 @@ class ZaikoRead:
         with open('zaikohyo.csv', 'w') as w:
             writer = csv.writer(w, lineterminator="\n")
             writer.writerows(data)
+
+    def get_kento_file(self):
+        files = os.listdir('kentohyo')
+        num = len(files)
+        if num > 1 :
+            print("kentohyo のファイルは一つにしてください。")
+            return None
+        elif num == 0:
+            print("kentohyo にファイルがありません。")
+            return None
+        else:
+            file_name = files[0]
+            file_name = os.path.join('kentohyo', file_name)
+            print("検討表{}を読み込みます".format(file_name))
+            return file_name
+
             
             
 

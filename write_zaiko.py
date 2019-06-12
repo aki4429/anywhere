@@ -76,8 +76,11 @@ class WriteZaiko:
         #input()
         df.to_csv(zaiko_file_name)
         
-
         k = zaiko_read.ZaikoRead()
+        while k.result == 0 :
+            print("kentohyo に適正にファイルをアップロードしてください。")
+            input()
+            k = zaiko_read.ZaikoRead()
 
         hyo = df.join([k.df], how='left')
         hyo = hyo.reindex(["在庫", "受注", "cat"], axis=1)
@@ -253,10 +256,10 @@ class WriteZaiko:
             sheet.cell(row=gyo, column=j+3, value = yotei.pos[i]) 
             j += 1
             i += 1
-       
-       
-       
-        wb.save('TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi)))
+        
+        save_file = 'zaikohyo/TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi))
+        wb.save(save_file)
+        print("{}を保存しました。".format(save_file))
         
 
 
