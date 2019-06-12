@@ -33,6 +33,7 @@ import openpyxl
 import mhparse as mh
 import datetime
 import dateutil.parser
+import os
 
 import sqlite3
 
@@ -43,8 +44,9 @@ class WriteZaiko:
 
         ans = ''
         while ans != 'q':
-            ans = int(input(MENU))
-            if ans == 1:
+            ans = input(MENU)
+
+            if ans == '1':
                 print("在庫表を作成します")
                 #input()
                 #DB tfc_codeテーブルから在庫フラグがあるデータをゲット
@@ -53,7 +55,7 @@ class WriteZaiko:
                 hyo_file_name = ZHYO
                 df = self.order_by_code(df, ans)
                 ans = 'q'
-            elif ans == 2:
+            elif ans == '2':
                 #DB tfc_codeから 検討フラグがあるデータをゲット
                 print("検討表を作成します")
                 df = self.get_kento(con)
@@ -61,8 +63,11 @@ class WriteZaiko:
                 hyo_file_name = KHYO
                 df = self.order_by_code(df, ans)
                 ans = 'q'
+            elif ans == 'q':
+                os.system('clear')
+                return None
             else:
-                print("番号を選んでください。")
+                print("半角番号を選んでください。")
                 input("return to continue")
                 continue
 
