@@ -39,6 +39,7 @@ class EditPdCode:
             print("=========TFC コード検索メニュー=========")
             moji = input("検索文字を入力してください。(終了=q):")
             while moji != 'q' and ans != 'q':
+                os.system('clear')
                 kekka = self.get_kekka(moji)
                 if len(kekka) > 0 :
                     ans = self.edit_kekka(kekka)
