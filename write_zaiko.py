@@ -72,8 +72,8 @@ class WriteZaiko:
                 continue
 
 
-        print('df', df)
-        input()
+        #print('df', df)
+        #input()
         df.to_csv(zaiko_file_name)
         
 
@@ -83,7 +83,7 @@ class WriteZaiko:
         hyo = hyo.reindex(["在庫", "受注", "cat"], axis=1)
         y = make_yotei.MakeYotei()
         hyo = hyo.join([y.frame], how='left')
-        print(hyo)
+        #print(hyo)
         if hyo_file_name == KHYO:
             kento_code = pd.read_csv(KENTO_C, index_col='品目CD')
             hyo = kento_code.join(hyo, how='left')
@@ -156,7 +156,9 @@ class WriteZaiko:
         df['fab'] = fabs
 
         #在庫表作成の場合、CAT_ORDER順に並べ替える
-        if ans == 1:
+        #print("ans:", ans)
+        #input()
+        if ans == '1':
             catnums = []
             for catname in df.cat.values:
                 catnums.append( CAT_ORDER[catname] )

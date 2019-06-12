@@ -119,7 +119,7 @@ class ZaikoRead:
 
         #在庫コードを含むデータだけ、抽出
         for shiire in shiire_data:
-            print("shiire[0]", shiire[0])
+            #print("shiire[0]", shiire[0])
             if self.check_zaiko(shiire[0], zaikolist):
                 shiire_new.append(shiire)
 

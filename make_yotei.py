@@ -47,10 +47,10 @@ class MakeYotei:
         cur.execute("select c.hcode, l.qty, i.delivery, i.etd, i.invn from invline l inner join inv i on l.inv_id = i.id, tfc_code c on l.code_id = c.id, poline p on l.poline_id = p.id where i.delivery > ? and c.kento = 1 and (p.om = '' or p.om IS NULL)", (begin_day,))
         #cur.execute("select c.hcode, l.qty, i.delivery, i.etd, i.invn from invline l inner join inv i on l.inv_id = i.id, tfc_code c on l.code_id = c.id, poline p on l.poline_id = p.id where i.delivery > ? and c.zaiko = 1 ", (begin_day,))
         yoteis = cur.fetchall()
-        print("INVOICE 予定")
-        print("="*30)
+        ##print("INVOICE 予定")
+        ##print("="*30)
         for yotei in yoteis:
-            print(*yotei)
+            ##print(*yotei)
             data.append([yotei[0], yotei[1], yotei[2], yotei[3], yotei[4]])
 
         return data
@@ -59,10 +59,10 @@ class MakeYotei:
         data=[]
         cur.execute("select c.hcode, p.qty, o.delivery, o.etd, o.pon from poline p inner join po o on p.po_id = o.id, tfc_code c on p.code_id = c.id where o.etd > ? and kento = 1 and (p.om = '' or p.om IS NULL)", (maxetd,))
         yoteis = cur.fetchall()
-        print("PO 予定")
-        print("="*30)
+        ##print("PO 予定")
+        ##print("="*30)
         for yotei in yoteis:
-            print(*yotei)
+            ##print(*yotei)
             data.append([yotei[0], yotei[1], yotei[2], yotei[3], yotei[4]])
 
         return data
@@ -70,10 +70,10 @@ class MakeYotei:
     def get_po_zan(self, cur, maxetd):
         cur.execute("select c.hcode, p.balance, o.delivery, o.etd, o.pon from poline p inner join po o on p.po_id = o.id, tfc_code c on p.code_id = c.id where o.etd <= ? and kento = 1 and (p.om = '' or p.om IS NULL) and balance >0", (maxetd,))
         yoteis = cur.fetchall()
-        print("出荷残リスト")
-        print("="*30)
-        for yotei in yoteis:
-            print(*yotei)
+        ##print("出荷残リスト")
+        ##print("="*30)
+        ##for yotei in yoteis:
+            ##print(*yotei)
 
     def kako_data(self, data):
         #南濃取り込み日付を取り出して重複を除いてソート
@@ -82,7 +82,7 @@ class MakeYotei:
             hiduke.append(d[2])
             
         hiduke = sorted(set(hiduke))
-        print("hiduke",hiduke)
+        ##print("hiduke",hiduke)
         
         #南濃取り込み日付が該当するETDをゲット
         self.etds = []
