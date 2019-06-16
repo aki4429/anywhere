@@ -1,0 +1,7 @@
+README.txt
+mhparse.py
+setup.py
+mhparse.egg-info/PKG-INFO
+mhparse.egg-info/SOURCES.txt
+mhparse.egg-info/dependency_links.txt
+mhparse.egg-info/top_level.txt

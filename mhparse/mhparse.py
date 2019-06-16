@@ -8,7 +8,8 @@ yobi = ["月","火","水","木","金","土","日"]
 
 #hiduke = '01/15(水)'
 
-def parse(hiduke):
+def parse(hiduke:str)->datetime.date:
+    """[01/18(金)]形式の文字を日付けデータにパースする。"""
     #今年は?
     this_year = datetime.date.today().year
 
