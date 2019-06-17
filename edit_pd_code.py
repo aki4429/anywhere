@@ -61,6 +61,7 @@ class EditPdCode:
             input()
             return []
         else:
+            kekka = kekka.sort_values('hinban')
             j = 0
             for i, row in kekka.iterrows():
                 print(str(j+1)+")", *row, ":",i)
