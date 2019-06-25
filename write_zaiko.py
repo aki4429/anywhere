@@ -7,7 +7,7 @@
 
 DBFILE='tfc.sqlite'
 
-CAT_ORDER = {'布地':1,'ﾇｰﾄﾞ':2,'ｶﾊﾞｰ':3,'INCOON':4, 'INCOON BED':5, '脚':6,'ｸｯｼｮﾝ':7, '旧モデル':8}
+CAT_ORDER = {'布地':1,'ﾇｰﾄﾞ':2,'ｶﾊﾞｰ':3,'INCOON':4, 'INCOON BED':5, '脚':6,'ｸｯｼｮﾝ':7, 'HYPERFLEX':8, '旧モデル':9}
 
 MENU ="""
 作成する表を選んでください。

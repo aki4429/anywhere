@@ -50,6 +50,8 @@ class Hinmoku:
             return True
         elif self.hin.startswith("F780"):
             return True
+        elif self.hin.startswith("H287"):
+            return True
         elif self.hin.startswith("N264"):
             return True
         elif self.hin.startswith("N528"):

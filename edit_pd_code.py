@@ -201,9 +201,11 @@ class EditPdCode:
             ans = input("編集する番号を選んでください。終了=q:")
             if ans != 'q' and ans.isdigit() :
                 #選択絡むの値をreadline の履歴に登録します。
-                print("kekka", self.df.loc[idn, colnames[int(ans)]])
+                res = self.df.loc[idn, colnames[int(ans)]]
+                print("kekka", res)
                 if int(ans) <12 :
-                    readline.add_history(self.df.loc[idn, colnames[int(ans)]])
+                    if res != None:
+                        readline.add_history(self.df.loc[idn, colnames[int(ans)]])
 
                 newdata = input("新しい内容を入力してください。:")
                 self.df.loc[idn, colnames[int(ans)]] = newdata
