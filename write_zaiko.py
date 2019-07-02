@@ -234,7 +234,7 @@ class WriteZaiko:
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(hyo.columns[j])) 
+            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(hyo.columns[j]).strftime("%m/%d")) 
             j += 1
        
         #ETD記入
@@ -243,7 +243,7 @@ class WriteZaiko:
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(yotei.etds[i])) 
+            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(yotei.etds[i]).strftime("%m/%d")) 
             j += 1
             i += 1
        
