@@ -11,8 +11,8 @@ import sqlite3
 
 #file_name = "//172.16.161.24/生産管理部/★★TFC保存★★/単価チェック/TI190117B_FUGUE.xls"
 
-#file_name = "./tanka/TI190615E_FUGUE.xls"
-file_name = "./tanka/TI190622C_TFC+SIC.xls"
+file_name = "./tanka/TI190629C_FUGUE.xls"
+#file_name = "./tanka/TI190622C_TFC+SIC.xls"
 #file_name = "./tanka/TI190615D_CH907.xls"
 #file_name = "./tanka/TI190601D_FUGUE_Revised.xls"
 #file_name = "./tanka/TI190525C_HAKATA.xls"
