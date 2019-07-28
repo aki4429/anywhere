@@ -52,6 +52,8 @@ class Hinmoku:
             return True
         elif self.hin.startswith("H287"):
             return True
+        elif self.hin.startswith("N111"):
+            return True
         elif self.hin.startswith("N264"):
             return True
         elif self.hin.startswith("N528"):
@@ -105,6 +107,10 @@ class Hinmoku:
             self.iro = self.iro.replace("DB", "")
             self.iro = self.iro.replace("NA", "")
 
+        #CH1071の、脚色DB/NAは外す
+        if "CH1071" in self.hin :
+            self.iro = self.iro.replace("NA", "DB")
+
         #パーツフィールドに"C"があれば、ピース末尾にCをつける
         if "C" in self.par :
             piece = self.pie + "C "
@@ -121,9 +127,12 @@ class Hinmoku:
         else:
             fab1 = self.nu1
 
-        #fabricが9053で始まるものは、HSQをつける
+        #fabricが9053/9066で始まるものは、HSQをつける
         if fab1.startswith("9053") :
             fab1 = fab1.replace("9053", "HSQ9053")
+
+        if fab1.startswith("9066") :
+            fab1 = fab1.replace("9066", "HSQ9066")
 
         code_line = code + "-"
         code_line += piece 

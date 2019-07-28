@@ -84,8 +84,8 @@ class ZaikoRead:
         with open(filename, 'r', encoding='CP932') as csvfile:
             reader = csv.reader(csvfile)
             next(reader)
-            for row in reader: #品目CD, 品目名, 現在庫数_自倉庫, 受注数
-                data.append([row[6], row[7], int(row[14]),int(float(row[118]))])
+            for row in reader: #品目CD, 品目名, 現在庫数_自倉庫-出庫予定数、, 受注数-出庫予定数
+                data.append([row[6], row[7], int(row[14])-int(float(row[15])),int(float(row[118]))-int(float(row[15]))])
 
         return data
 
