@@ -48,6 +48,10 @@ class Hinmoku:
             return True
         elif self.hin.startswith("BRU"):
             return True
+        elif self.hin.startswith("CU"):
+            return True
+        elif self.hin.startswith("D528"):
+            return True
         elif self.hin.startswith("F780"):
             return True
         elif self.hin.startswith("H287"):
@@ -71,6 +75,8 @@ class Hinmoku:
         elif self.hin.startswith("T523"):
             return True
         elif self.hin.startswith("TDS"):
+            return True
+        elif self.hin.startswith("X"):
             return True
         elif self.hin.startswith("Y436"):
             return True
@@ -128,8 +134,9 @@ class Hinmoku:
             fab1 = self.nu1
 
         #fabricが9053/9066で始まるものは、HSQをつける
+        #fabricが9053は、末尾にZをつける
         if fab1.startswith("9053") :
-            fab1 = fab1.replace("9053", "HSQ9053")
+            fab1 = fab1.replace("9053", "HSQ9053Z")
 
         if fab1.startswith("9066") :
             fab1 = fab1.replace("9066", "HSQ9066")
