@@ -11,12 +11,14 @@ import sqlite3
 
 #file_name = "//172.16.161.24/生産管理部/★★TFC保存★★/単価チェック/TI190117B_FUGUE.xls"
 
-file_name = "./tanka/TI190829B_FUGUE.xls"
-#file_name = "./tanka/TI190822A_FUGUE.xls"
+#file_name = "./tanka/TI191017B_FUGUE.xls"
+#file_name = "./tanka/TI191107B_FUGUE.xls"
+#file_name = "./tanka/TI191024B_FUGUE.xls"
+#file_name = "./tanka/TI190921D_FUJIKOSHI.xls"
 #file_name = "./tanka/TI190622B_TFC+SIC.xls"
 #file_name = "./tanka/TI190615D_CH907.xls"
-#file_name = "./tanka/TI190601D_FUGUE_Revised.xls"
-#file_name = "./tanka/TI190824C_HAKATA.xls"
+#file_name = "./tanka/TI191D_FUGUE_Revised.xls"
+file_name = "./tanka/TI191112B_HAKATA.xls"
 #file_name = "./tanka/TI190720C_HAKATA.xls"
 #file_name = "./tanka/TI190326C_TF1089.xls"
 
@@ -89,7 +91,7 @@ master = []
     # Codeクラスを生成して格納
 #    for row in reader:
 #        #品番、アイテム、uprice
-#        master.append([row[0], row[1], row[5]]) 
+#        master.append([row[0], row[1], row[5]])
 
 #sqlite3からとりこみ
 con = sqlite3.connect(SFILE)

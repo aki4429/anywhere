@@ -23,7 +23,7 @@ ZHYO = 'zaiko_hyo.csv'
 KHYO = 'kento_hyo.csv'
 KENTO_C = 'kentohyo.csv' #検討表のコード並び
 ZEXCEL = 'TFC_zaiko.xlsx'
-                
+
 import zaiko_read
 import make_yotei
 import pandas as pd
@@ -76,6 +76,7 @@ class WriteZaiko:
         #input()
         df.to_csv(zaiko_file_name)
         
+        #検討票から在庫データを読み取ります。
         k = zaiko_read.ZaikoRead()
         while k.result == 0 :
             print("kentohyo に適正にファイルをアップロードしてください。")
@@ -83,6 +84,8 @@ class WriteZaiko:
             k = zaiko_read.ZaikoRead()
 
         hyo = df.join([k.df], how='left')
+        #旧モデルで在庫と受注の無いものは省きます。
+        hyo = hyo[~ ((hyo['cat'] == '旧モデル') & (hyo['受注'].isna()) & (hyo['在庫'].isna()))] 
         hyo = hyo.reindex(["在庫", "受注", "cat"], axis=1)
         y = make_yotei.MakeYotei()
         hyo = hyo.join([y.frame], how='left')
@@ -101,7 +104,7 @@ class WriteZaiko:
 
     def show(self, data):
         for d in data:
-            for row in d: 
+            for row in d:
                 print(row[0], row[1])
 
     def get_zaiko(self, con):
@@ -137,7 +140,7 @@ class WriteZaiko:
         for code in codes:
             #-で区切って左がモデル名
             models.append(code.split('-')[0])
-            if len(code.split('-')) >=2: 
+            if len(code.split('-')) >=2:
                 #-の右があれば、スペースで区切って左がアイテム
                 items.append(code.split('-')[1].split(' ')[0])
                 flag = 0
@@ -153,7 +156,7 @@ class WriteZaiko:
             else:
                 items.append('')
                 fabs.append('')
-                
+
         df['model'] = models
         df['item'] = items
         df['fab'] = fabs
@@ -177,90 +180,90 @@ class WriteZaiko:
     def write_excel(self, hyo, kijunbi, yotei):
         wb = openpyxl.load_workbook(ZEXCEL)
         sheet = wb['zaiko']
-        sheet['B1'] = kijunbi
+        sheet['C1'] = kijunbi
         #コード記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=1, value = hyo.index[j]) 
+            sheet.cell(row=i, column=2, value = hyo.index[j])
             i += 1
             j += 1
-       
+
         #在庫記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=2, value = hyo.iloc[j,0]) 
+            sheet.cell(row=i, column=3, value = hyo.iloc[j,0])
             i += 1
             j += 1
-       
+
         #受注記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=3, value = hyo.iloc[j,1] )
+            sheet.cell(row=i, column=4, value = hyo.iloc[j,1] )
             i += 1
             j += 1
-       
+
         #有効残記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=4, value = '=B{0}-C{0}'.format(i)) 
+            sheet.cell(row=i, column=5, value = '=C{0}-D{0}'.format(i))
             i += 1
             j += 1
-       
+
         #カテゴリー記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
-            sheet.cell(row=i, column=5, value = hyo.iloc[j,2]) 
+            sheet.cell(row=i, column=6, value = hyo.iloc[j,2])
             i += 1
             j += 1
-       
+
         #予定入荷数記入
         j=0
         i=4 #4行目からスタート
         while i < len(hyo):
             k = 3
             while k < len(hyo.columns) :
-                sheet.cell(row=i, column=3+k, value = hyo.iloc[j,k]) 
+                sheet.cell(row=i, column=4+k, value = hyo.iloc[j,k])
                 k += 1
             i += 1
             j += 1
-       
+
         #南濃取り込み日記入
         gyo=3 #3行目に記入
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(hyo.columns[j]).strftime("%m/%d")) 
+            sheet.cell(row=gyo, column=j+4, value = dateutil.parser.parse(hyo.columns[j]).strftime("%m/%d"))
             j += 1
-       
+
         #ETD記入
         gyo=2 #2行目に記入
         i=0
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = dateutil.parser.parse(yotei.etds[i]).strftime("%m/%d")) 
+            sheet.cell(row=gyo, column=j+4, value = dateutil.parser.parse(yotei.etds[i]).strftime("%m/%d"))
             j += 1
             i += 1
-       
+
         #PO#, INV#記入
         i=0
         gyo=1 #1行目に記入
         j=3 #index 3 以降予定データ
         #６列目からスタート = j+3
         while j < len(hyo.columns):
-            sheet.cell(row=gyo, column=j+3, value = yotei.pos[i]) 
+            sheet.cell(row=gyo, column=j+4, value = yotei.pos[i])
             j += 1
             i += 1
-        
+
         save_file = 'zaikohyo/TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi))
         wb.save(save_file)
         print("{}を保存しました。".format(save_file))
-        
+
 
 
 

@@ -23,7 +23,7 @@ class JuchuReader:
 
     def sel_day(self):
         num = 1
-        for i in range(-1, -7, -1):
+        for i in range(-1, -14, -1):
             print(str(num) + ")" +self.files[i])
             num += 1
 
