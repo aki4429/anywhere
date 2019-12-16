@@ -61,6 +61,36 @@ def kako_add(data):
             new_list.append([row[0].replace("CH271-42", "CH271-37"),
                 row[1], row[2], row[3], row[4] * -1])
 
+
+        if "CH271E-03 " in row[0]:
+            new_list.append([row[0].replace("CH271E-03", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -2])
+
+        if "CH271E-08 " in row[0]:
+            new_list.append([row[0].replace("CH271E-08", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+        if "CH271E-09 " in row[0]:
+            new_list.append([row[0].replace("CH271E-09", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+        if "CH271E-49 " in row[0]:
+            new_list.append([row[0].replace("CH271E-49", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+        if "CH271E-50 " in row[0]:
+            new_list.append([row[0].replace("CH271E-50", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+        if "CH271E-41 " in row[0]:
+            new_list.append([row[0].replace("CH271E-41", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+        if "CH271E-42 " in row[0]:
+            new_list.append([row[0].replace("CH271E-42", "CH271-37"),
+                row[1], row[2], row[3], row[4] * -1])
+
+
         if "CH907-06 " in row[0]:
             new_list.append([row[0].replace("CH907-06", "CH907-35"),
                 row[1], row[2], row[3], row[4] * -1])

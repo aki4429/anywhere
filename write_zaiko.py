@@ -260,7 +260,8 @@ class WriteZaiko:
             j += 1
             i += 1
 
-        save_file = 'zaikohyo/TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi))
+        #save_file = 'zaikohyo/TFC_zaiko_{0}.xlsx'.format(mh.parse(kijunbi))
+        save_file = 'zaikohyo/TFC_zaiko_{0}.xlsx'.format(kijunbi)
         wb.save(save_file)
         print("{}を保存しました。".format(save_file))
 

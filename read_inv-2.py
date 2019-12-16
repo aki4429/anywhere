@@ -96,6 +96,23 @@ class ReadInv:
                 pon = keep_pon
 
             item = sheet.cell(row_index, ITEM_COL).value
+            #CHは旧コードに変換
+            item = item.replace("CH271E-03B", "CH271-03B")
+            item = item.replace("CH271E-08B", "CH271N-08B")
+            item = item.replace("CH271E-09B", "CH271N-09B")
+            item = item.replace("CH271E-41B", "CH271-41B")
+            item = item.replace("CH271E-42B", "CH271-42B")
+            item = item.replace("CH271E-49B", "CH271N-49B")
+            item = item.replace("CH271E-50B", "CH271N-50B")
+            item = item.replace("CH271E-17B", "CH271-17B")
+            item = item.replace("CH271E-03 ", "CH271-03 ")
+            item = item.replace("CH271E-08 ", "CH271N-08 ")
+            item = item.replace("CH271E-09 ", "CH271N-09 ")
+            item = item.replace("CH271E-41 ", "CH271-41 ")
+            item = item.replace("CH271E-42 ", "CH271-42 ")
+            item = item.replace("CH271E-49 ", "CH271N-49 ")
+            item = item.replace("CH271E-50 ", "CH271N-50 ")
+            item = item.replace("CH271E-17 ", "CH271-17 ")
             qty = sheet.cell(row_index, QTY_COL).value
             #Item 列のセルが空白になったら、終わり
             if len(item) == 0 :

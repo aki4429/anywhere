@@ -42,7 +42,7 @@ class JuchuRead:
             for row in reader: #品目名,受注伝票№,受注日,納期,受注数
                 h = hinmoku.Hinmoku(row[A_2])
                 #バイオーダーか確認 and 除外モデルか確認
-                if h.is_byorder() and not h.jogai() :
+                if (h.is_byorder() or h.is_fujiei() ) and not h.jogai() :
                     self.data.append([h.make_code(),row[A_3],
                         row[A_4],row[A_5],int(float(row[A_6]))])
 

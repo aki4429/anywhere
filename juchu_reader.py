@@ -5,14 +5,14 @@
 #juchu_read.py に渡す
 
 import os
-import juchu_read
+import juchu_read_2
 
 class JuchuReader:
     def __init__(self):
         self.files = self.get_files()
         filename = self.files[-(self.sel_day())]
         print("filename:", filename)
-        jr = juchu_read.JuchuRead(os.path.join("juchu", filename))
+        jr = juchu_read_2.JuchuRead(os.path.join("juchu", filename))
         jr.show()
         jr.show_ng()
 

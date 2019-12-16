@@ -25,11 +25,17 @@ class Hinmoku:
         self.tok = line[TOK].replace(" ","") 
 
     #バイオーダーの判定(SがSHI(仕様)に含まれるか
-    #def is_byorder(self):
-    #    if "S" in self.shi:
-    #        return True
-    #    else:
-    #        return False
+    def is_fujiei(self):
+        if self.hin.startswith('CH1021'):
+            return True
+        elif self.hin.startswith("IL714EO"):
+            return True
+        elif self.hin.startswith("IL715EO"):
+            return True
+        elif self.hin.startswith("CH931EO"):
+            return True
+        else:
+            return False
 
     #バイオーダーの判定(Zがtok(特注)に含まれるか
     def is_byorder(self):
@@ -72,6 +78,8 @@ class Hinmoku:
             return True
         elif self.hin.startswith("P717"):
             return True
+        elif self.hin.startswith("SDT002"):
+            return True
         elif self.hin.startswith("SDT005"):
             return True
         elif self.hin.startswith("SLT"):
@@ -94,9 +102,11 @@ class Hinmoku:
             return False
 
     def make_code(self):
-        #仕様のフィールドにNがあれば、品名の末尾にNを追加
+        #仕様のフィールドにNがあれば、品名の末尾にNを追加 EがあればEを
         if "N" in self.shi :
             code = self.hin + "N"
+        elif "E" in self.shi :
+            code = self.hin + "E"
         else:
             code = self.hin
 
@@ -132,8 +142,8 @@ class Hinmoku:
         else:
             piece = self.pie + " "
 
-        #LH03 は、布地名の末尾から３文字目に / を挿入
-        if "LH03" in self.hin :
+        #LH03 は、布地名がSPで始まる以外のの末尾から３文字目に / を挿入
+        if "LH03" in self.hin and not self.nu1.startswith('SP'):
             fab1 = self.nu1[:-2] + "/" + self.nu1[-2:]
         # CH1021は、布地名の末尾から３文字目に - を挿入
         elif "CH1021" in self.hin :
@@ -164,14 +174,14 @@ class Hinmoku:
         #    code_line += self.tok
 
         #CH271-08 /09 /49 /50 は CH271N
-        if "CH271-08 " in code_line:
-            code_line = code_line.replace("CH271", "CH271N")
-        elif "CH271-09 " in code_line:
-            code_line = code_line.replace("CH271", "CH271N")
-        elif "CH271-49 " in code_line:
-            code_line = code_line.replace("CH271", "CH271N")
-        elif "CH271-50 " in code_line:
-            code_line = code_line.replace("CH271", "CH271N")
+        #if "CH271-08 " in code_line:
+        #    code_line = code_line.replace("CH271", "CH271N")
+        #elif "CH271-09 " in code_line:
+        #    code_line = code_line.replace("CH271", "CH271N")
+        #elif "CH271-49 " in code_line:
+        #    code_line = code_line.replace("CH271", "CH271N")
+        #elif "CH271-50 " in code_line:
+        #    code_line = code_line.replace("CH271", "CH271N")
 
         return code_line
 

@@ -10,17 +10,19 @@ import re
 import sqlite3
 
 #file_name = "//172.16.161.24/生産管理部/★★TFC保存★★/単価チェック/TI190117B_FUGUE.xls"
-
-#file_name = "./tanka/TI191017B_FUGUE.xls"
-#file_name = "./tanka/TI191107B_FUGUE.xls"
-#file_name = "./tanka/TI191024B_FUGUE.xls"
+#
+#file_name = "./tanka/TI191116C_HAKATA.xls"
+#file_name = "./tanka/TI191130D_FUGUE.xls"
+#file_name = "./tanka/TI191123C_FUGUE.xls"
 #file_name = "./tanka/TI190921D_FUJIKOSHI.xls"
 #file_name = "./tanka/TI190622B_TFC+SIC.xls"
 #file_name = "./tanka/TI190615D_CH907.xls"
-#file_name = "./tanka/TI191D_FUGUE_Revised.xls"
-file_name = "./tanka/TI191112B_HAKATA.xls"
-#file_name = "./tanka/TI190720C_HAKATA.xls"
-#file_name = "./tanka/TI190326C_TF1089.xls"
+file_name = "./tanka/TI191207C_FUGUE.xls"
+#file_name = "./tanka/TI191112B_HAKATA.xls"
+#file_name = "./tanka/TI191130C_HAKATA.xls"
+#file_name = "./tanka/TI191119D__FUJIE.xls"
+#file_name = "./tanka/TI191203C_330系列+CH261.xls"
+
 
 result_filename = file_name.replace("xls", "result.csv")
 

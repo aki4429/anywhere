@@ -85,7 +85,11 @@ class ZaikoRead:
             reader = csv.reader(csvfile)
             next(reader)
             for row in reader: #品目CD, 品目名, 現在庫数_自倉庫-出庫予定数、, 受注数-出庫予定数
-                data.append([row[6], row[7], int(row[14])-int(float(row[15])),int(float(row[118]))-int(float(row[15]))])
+                #data.append([row[6], row[7], int(row[14])-int(float(row[15])),int(float(row[118]))-int(float(row[15]))])
+                if row[10].startswith('013'):
+                    row[10] = row[10].replace('013', '013CH')
+
+                data.append([row[10], row[12], int(float(row[17]))-int(float(row[20])),int(float(row[126]))-int(float(row[20]))])
 
         return data
 
@@ -176,7 +180,7 @@ class ZaikoRead:
         with open(filename, 'r', encoding='CP932') as csvfile:
             reader = csv.reader(csvfile)
             #next(reader)
-            for row in reader: #品目CD, 現在庫数_自倉庫, 受注数
+            for row in reader: 
                 data.append([row[0], int(row[1]),int(float(row[2]))])
 
         return data
@@ -186,7 +190,9 @@ class ZaikoRead:
         csvfile = open(self.file_name, 'r', encoding='CP932')
         reader = csv.reader(csvfile)
         next(reader)
-        kijunbi = next(reader)[18]
+        #kijunbi = next(reader)[18]
+        #new obic 生産開始日に変更
+        kijunbi = next(reader)[6].replace("/", "")
 
         csvfile.close()
         return kijunbi
