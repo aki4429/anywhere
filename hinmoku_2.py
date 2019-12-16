@@ -142,8 +142,8 @@ class Hinmoku:
         else:
             piece = self.pie + " "
 
-        #LH03 は、布地名の末尾から３文字目に / を挿入
-        if "LH03" in self.hin :
+        #LH03 は、/の入っていない布地名の場合、布地名の末尾から３文字目に / を挿入
+        if "LH03" in self.hin and not '/' in self.nu1:
             fab1 = self.nu1[:-2] + "/" + self.nu1[-2:]
         # CH1021は、布地名の末尾から３文字目に - を挿入
         elif "CH1021" in self.hin :
