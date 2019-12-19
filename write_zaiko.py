@@ -54,6 +54,7 @@ class WriteZaiko:
                 zaiko_file_name = ZAIKOF
                 hyo_file_name = ZHYO
                 df = self.order_by_code(df, ans)
+                df.to_csv(zaiko_file_name)
                 ans = 'q'
             elif ans == '2':
                 #DB tfc_codeから 検討フラグがあるデータをゲット
@@ -74,7 +75,7 @@ class WriteZaiko:
 
         #print('df', df)
         #input()
-        df.to_csv(zaiko_file_name)
+        #df.to_csv(zaiko_file_name)
         
         #検討票から在庫データを読み取ります。
         k = zaiko_read.ZaikoRead()
