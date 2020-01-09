@@ -9,8 +9,8 @@ PIE=slice(11,17) #ピース
 PAR=slice(17,20) #パーツ
 IRO=slice(20,24) #色
 NU1=slice(24,31) #布地1
-NU2=slice(31,39) #布地2
-TOK=slice(38,39) #特
+NU2=slice(31,38) #布地2
+TOK=slice(38,40) #特
 
 class Hinmoku:
     def __init__(self, line):
@@ -53,6 +53,7 @@ class Hinmoku:
             #print("tok", self.tok)
             return True
         else:
+            #print("tok", self.tok)
             return False
 
     #次のコードは、TFCバイオーダーではないので除外
@@ -131,7 +132,7 @@ class Hinmoku:
             self.iro = self.iro.replace("DB", "")
             self.iro = self.iro.replace("NA", "")
 
-        #CH1071の、脚色DB/NAは外す
+        #CH1071の、脚色NAはDBに変える
         if "CH1071" in self.hin :
             self.iro = self.iro.replace("NA", "DB")
 

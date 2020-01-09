@@ -2,12 +2,13 @@
 
 #TFC管理するためのメニュー
 
-import write_zaiko
+import write_zk
 import juchu_reader
 import edit_pd_code
 import po_status
 import inv_status
 import os
+import po_balance
 
 MENU_TITLE = """-------------------------------
 TFC管理メニュー
@@ -41,9 +42,10 @@ class Menu:
     def go(self, num):
         if num == 1:
             os.system('clear')
-            print("手順(1) orbicから、仕入先コード:999997から999999までの手配表をO/P。")
+            print("手順(1) orbicから、仕入先コード:190001から190002までの手配表をO/P。")
             print("手順(2) 手配表をアップロードしてください。")
-            w = write_zaiko.WriteZaiko()
+            po_balance.reset()
+            write_zk.write_zk()
         elif num == 2:
             j = juchu_reader.JuchuReader()
         elif num == 3:

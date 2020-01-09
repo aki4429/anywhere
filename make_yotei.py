@@ -80,7 +80,7 @@ class MakeYotei:
         hiduke =[]
         for d in data:
             hiduke.append(d[2])
-            
+        
         hiduke = sorted(set(hiduke))
         ##print("hiduke",hiduke)
         

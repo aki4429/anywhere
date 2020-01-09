@@ -38,11 +38,23 @@ class WriteKako:
 
     #加工後受注ファイル読み込み
     def read_kako(self, filename):
+        #コードDBに接続
+        con = sqlite3.connect(FILES)
+        cur = con.cursor()
         with open(filename, 'r', encoding='CP932') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader: #品目名,受注伝票№,受注数,id
+                if row[A_6] == '':
+                    #print('r6', row[A_0])
+                    cur.execute('select id from tfc_code where hcode = ?', (row[A_0],))
+                    result = cur.fetchone()[0]
+                    row[A_6] = result
+
                 self.kakodata.append([row[A_0], row[A_1], int(row[A_4]), row[A_6]])
                 #self.kakodata.append(row)
+
+        cur.close()
+        con.close()
 
     # ファブリック変換用ファイルを開く
     def read_fab(self, filename):

@@ -12,7 +12,7 @@ import sqlite3
 #file_name = "//172.16.161.24/生産管理部/★★TFC保存★★/単価チェック/TI190117B_FUGUE.xls"
 #
 #file_name = "./tanka/TI191116C_HAKATA.xls"
-file_name = "./tanka/TI191212B_FUGUE.xls"
+file_name = "./tanka/TI191228C_CH1092.xls"
 #file_name = "./tanka/TI191123C_FUGUE.xls"
 #file_name = "./tanka/TI190921D_FUJIKOSHI.xls"
 #file_name = "./tanka/TI190622B_TFC+SIC.xls"
