@@ -21,23 +21,20 @@ class MakeBalance:
         #begin_day ='2020-01-06'
 
 
-        #基準日以降deliveryのinv内容情報の取得フクラ南濃向けバイオーダー以外
-        #cur.execute("select o.id, v.qty, i.invn from (((poline o inner join invline v on v.poline_id = o.id) inner join po p on o.po_id = p.id) inner join inv i on v.inv_id = i.id) where i.delivery > ? and p.comment = 'To Hukla Japan/Nanno ' and o.om = ''", (begin_day,))
-
-        #balances = cur.fetchall()
-
         #インボイス残データ用
-        #cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((((poline o inner join invline v on v.poline_id = o.id) inner join po p on o.po_id = p.id) inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and p.comment = 'To Hukla Japan/Nanno ' and o.om = ''", (begin_day,))
-        cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((invline v inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and c.zaiko=1", (begin_day,))
+        #コードの在庫区分が１のインボイス行で、南濃取り込み日が
+        #bigin_day より新しいものを抽出
+        cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((invline v inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and (c.zaiko=1 or c.kento =1)", (begin_day,))
 
         invlines = cur.fetchall()
         #self.invlines = invlines
 
         #インボイスの最新のdeliveryを求めます。
-        #（インボイスデータは南濃データのみ)
+        #（インボイスデータは在庫区分1)
         #POデータはmaxdeli以降
 
-        cur.execute("select max(i.delivery) from (((invline v inner join poline o on v.poline_id = o.id) inner join po p on p.id = o.po_id) inner join inv i on v.inv_id = i.id) where p.comment = 'To Hukla Japan/Nanno ' and o.om=''")
+        #cur.execute("select max(i.delivery) from (((invline v inner join poline o on v.poline_id = o.id) inner join po p on p.id = o.po_id) inner join inv i on v.inv_id = i.id) where p.comment = 'To Hukla Japan/Nanno ' and o.om=''")
+        cur.execute("select max(i.delivery) from ((invline v inner join inv i on v.inv_id = i.id) inner join tfc_code c on v.code_id = c.id ) where c.zaiko=1 or c.kento=1")
         maxdeli = cur.fetchone()[0]
 
         #po内容情報の取得/フクラ南濃向けバイオーダー除く
