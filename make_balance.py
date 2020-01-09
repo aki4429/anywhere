@@ -27,7 +27,8 @@ class MakeBalance:
         #balances = cur.fetchall()
 
         #インボイス残データ用
-        cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((((poline o inner join invline v on v.poline_id = o.id) inner join po p on o.po_id = p.id) inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and p.comment = 'To Hukla Japan/Nanno ' and o.om = ''", (begin_day,))
+        #cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((((poline o inner join invline v on v.poline_id = o.id) inner join po p on o.po_id = p.id) inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and p.comment = 'To Hukla Japan/Nanno ' and o.om = ''", (begin_day,))
+        cur.execute("select i.delivery, i.etd, i.invn, c.hcode, v.qty from ((invline v inner join inv i on v.inv_id = i.id) inner join tfc_code c on c.id = v.code_id) where i.delivery > ? and c.zaiko=1", (begin_day,))
 
         invlines = cur.fetchall()
         #self.invlines = invlines
@@ -64,7 +65,7 @@ class MakeBalance:
 
         self.invlist = invlist
         #PO残情報とinv情報を合わせる
-        self.totallist = invlist + bal_hyo
+        self.totallist = self.sum_list(invlist + bal_hyo)
         #self.totallist.sort()
 
         cur.close()
@@ -120,8 +121,25 @@ class MakeBalance:
             writer = csv.writer(f)
             writer.writerows(hyo)
 
+    #ETD, delivery, PO/inv, code, qty
+    def sum_list(self, data):
+        #コード,PO/INVが同じデータの入荷予定数を加算して一つにまとめる。
+        matome ={}  #tuple をキーの辞書
+        c_data = [] #まとめたデータ保管用変数
+
+        for row in data:
+            matome.setdefault((row[0], row[1], row[2], row[3]), 0 )
+            matome[(row[0], row[1], row[2], row[3])] +=  row[4]
+
+        #辞書からリストに戻す
+        for k, v in matome.items():
+            c_data.append(list(k) + [v])
+
+        return c_data
+
+
 
 #mb = MakeBalance()
 #mb.write_balance( mb.make_yotei())
-#mb.write_balance(mb.invlist)
+#mb.write_balance(mb.totallist)
 
