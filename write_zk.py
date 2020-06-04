@@ -12,7 +12,7 @@ MENU ="""
 番号で選んでください。(1/2/.. or q=終了): """
 
 ZEXCEL = 'TFC_zaiko.xlsx'
-KEXCEL = 'TFC_kento_template.xlsx'
+KEXCEL = 'TFC_kento_template2.xlsx'
 
 import openpyxl
 import csv
@@ -64,6 +64,10 @@ def make_hyo(nolist, codelist, totallist):
 
     for row in totallist: #着日, etd, PO No. コード　残数
         yindex = get_yindex(hyo, row[3])
+        #print('row[3]=', row[3], row[0], row[1], row[2], row[4])
+        #if yindex == 0:
+        #    print('row[3]=', row[3], row[0], row[1], row[2], row[4])
+
         if yindex != None:
             hyo[yindex][get_xindex(hyo, row[2])] = row[4]
 
@@ -182,6 +186,7 @@ def write_zk():
             #旧モデルで在庫と受注の無いものは省きます。
             zdata = [e for e in zdata if not (e[1] == '旧モデル' and e[2] == 0 and e[3] == 0)]
             #print('mb', mb.totallist)
+            #print('nolist', nolist)
             hyo = make_hyo(nolist, zdata, mb.totallist)
             write_zexcel(hyo, kijunbi, nolist)
         

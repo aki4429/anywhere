@@ -4,24 +4,25 @@
 #インボイスを読み込んで、コード、品名、単価のデータを
 #はき出す
 
+SEARCH_PATH = "./tanka/*.xls"
+
 import csv
 import xlrd
 import re
 import sqlite3
+import glob
+
+files = glob.glob(SEARCH_PATH)
+files.sort()
+file_name = files[-1]
+
+print('file_name:', file_name)
 
 #file_name = "//172.16.161.24/生産管理部/★★TFC保存★★/単価チェック/TI190117B_FUGUE.xls"
 #
 #file_name = "./tanka/TI191116C_HAKATA.xls"
-file_name = "./tanka/TI191228C_CH1092.xls"
+#file_name = "./tanka/TI191212B_FUGUE.xls"
 #file_name = "./tanka/TI191123C_FUGUE.xls"
-#file_name = "./tanka/TI190921D_FUJIKOSHI.xls"
-#file_name = "./tanka/TI190622B_TFC+SIC.xls"
-#file_name = "./tanka/TI190615D_CH907.xls"
-#file_name = "./tanka/TI191207C_FUGUE.xls"
-#file_name = "./tanka/TI191112B_HAKATA.xls"
-#file_name = "./tanka/TI191130C_HAKATA.xls"
-#file_name = "./tanka/TI191119D__FUJIE.xls"
-#file_name = "./tanka/TI191203C_330系列+CH261.xls"
 
 
 result_filename = file_name.replace("xls", "result.csv")
@@ -48,7 +49,7 @@ UP_COL = 4
 
 SHEET_NAME = "INVOCE"
 
-print(file_name)
+#print(file_name)
 
 book = xlrd.open_workbook(file_name)
 print(book.sheet_names())

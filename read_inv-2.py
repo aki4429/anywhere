@@ -65,7 +65,7 @@ class ReadInv:
         return sheet.cell(*INVN).value.replace("Invoice No:","")
         
     def get_etd(self, sheet):
-        etd = parse(sheet.cell(*ETD).value.replace("ETD:","" ).replace("、", ","))
+        etd = parse(sheet.cell(*ETD).value.replace("ETD:","" ).replace("、", ",").replace(".0", ". 0").replace(".1", ". 1").replace(".2", ". 2").replace(".3", ". 3").replace("，", ","))
         return etd.strftime("%Y-%m-%d")
 
     def ifcontainers(self, book):

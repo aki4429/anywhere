@@ -18,6 +18,7 @@ A_4 = 0 #受注日
 A_5 = 29 #納期(出荷日)
 A_6 = 73 #受注数
 A_7 = 34 #倉庫コード
+A_8 = 64 #商品コード (追加)
 
 HIN=56 #品目CD
 SHI=57 #仕様
@@ -68,7 +69,8 @@ class JuchuRead:
                 #倉庫コードがA10000か
                 if (h.is_byorder() or h.is_fujiei() ) and row[A_7] == 'A10000' and not h.jogai() :
                     self.data.append([h.make_code(),row[A_3],
-                        row[A_4],row[A_5],int(float(row[A_6]))])
+                        row[A_4],row[A_5],int(float(row[A_6])),row[A_8]]) #A_8を末尾に追加
+                        #row[A_4],row[A_5],int(float(row[A_6]))])
 
     def read_sql(self, filename):
         con=sqlite3.connect(filename)

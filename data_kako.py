@@ -17,12 +17,24 @@ def kako_add(data):
             new_list.append([row[0].replace("-03", "-37"), row[1], row[2],
                 row[3], row[4] * -2])
 
+        if "CH232W-06 " in row[0]:
+            new_list.append([row[0].replace("-06", "-37"), row[1], row[2],
+                row[3], row[4] * -1])
+
+        if "CH232W-07 " in row[0]:
+            new_list.append([row[0].replace("-07", "-37"), row[1], row[2],
+                row[3], row[4] * -1])
+
         if "CH232W-08 " in row[0]:
             new_list.append([row[0].replace("-08", "-37"), row[1], row[2],
                 row[3], row[4] * -1])
 
         if "CH232W-09 " in row[0]:
             new_list.append([row[0].replace("-09", "-37"), row[1], row[2],
+                row[3], row[4] * -1])
+
+        if "CH232W-20N " in row[0]:
+            new_list.append([row[0].replace("-20N", "-37"), row[1], row[2],
                 row[3], row[4] * -1])
 
         if "CH232W-49 " in row[0]:
@@ -191,8 +203,15 @@ def check(data, codes):
                 else:
                     flag = "Double"
 
+        #obic_code を末尾に持っていきたいので、取り出しておく
+        if len(row) > 5 :  #obic_code がある場合、データ帳は６になる。
+            obic_code = row.pop()
+        else:
+            obic_code =''
+
         row.append(flag)
         row.append(idn)
+        row.append(obic_code)
 
 
     return data

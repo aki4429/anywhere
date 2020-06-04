@@ -93,6 +93,9 @@ class MakeBalance:
     def make_yotei(self):
         nolist = self.make_nolist()
         codelist = self.make_codelist()
+        #print('nolist:', nolist)
+        #print('codelist:', codelist)
+
         #予定表用の2次元配列を初期化してデータを代入する
         yotei_hyo = [['' for i in range(len(nolist)+1)] for j in range(len(codelist)+1)]
 

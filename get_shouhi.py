@@ -88,6 +88,8 @@ def make_monthlist():
     for f in files:
         monthlist.append( f.split('-')[0][-2:]+f.split('-')[1][:2])
 
+    monthlist.sort()
+
     return monthlist
 
 def make_shouhi(codelist):
