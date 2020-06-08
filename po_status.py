@@ -24,12 +24,17 @@ class PoStatus:
             print("="*30)
             idn = input("POのidナンバーを選んでください。(終了~q:)")
             if idn != 'q':
-                ans = input("d) 詳細表示 t) 南濃取込日登録 q)終了")
+                print('id={} が選ばれました。'.format(idn))
+                ans = input("d) 詳細表示 t) 南濃取込日登録 j) 情報取得 q)終了")
                 if ans == 'd':
                     self.show_detail(cur, idn)
                 elif ans == 't':
                     self.set_deliver(cur, idn)
+                elif ans == 'j':
+                    self.joho = self.get_info(cur, idn)
+                    print('po情報は:', self.joho)
             else:
+                print('終了します。')
                 pass
 
 
@@ -40,6 +45,7 @@ class PoStatus:
         #cur.execute("select id, etd, pon, per, port, pod from po order by etd")
         #cur.execute("select id, etd, pon, per, port,comment, pod from po order by etd")
         res = cur.fetchall()
+        res = res[-15:] #最新のデータ○行まで表示
         for row in res:
             cur.execute("select c.uprice * p.qty from poline p inner join tfc_code c on p.code_id = c.id where p.po_id = ?", (row[0],))
             prices = cur.fetchall()
@@ -49,7 +55,7 @@ class PoStatus:
                 amount += float(price[0])
                 
             #print(*row, amount, sep=',')
-            print(*row, amount)
+            print(*row, '{:.2f}'.format(amount)) #下２桁まで
 
     def show_detail(self, cur, idn):
         print("="*30)
@@ -100,7 +106,12 @@ class PoStatus:
         deliver = deliver[:4] + "-" + deliver[4:6] + "-" + deliver[6:8]
         cur.execute("UPDATE po SET delivery = ? where id = ?",(deliver,idn))
 
+    def get_info(self, cur, idn):
+        cur.execute("select id, pon, pod, etd, delivery from po where id=?", (idn,))
+        joho = cur.fetchone()
+        return joho
 
 
 #s = PoStatus()
+#print('情報は', s.joho)
 

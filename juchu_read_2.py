@@ -8,6 +8,7 @@
 #FILENAME="juchu_20191105.csv"
 #FILENAME="juchu_20191028.csv"
 FILEOUT = "kako_juchu.csv"
+TORIOUT = "torikomi_juchu.csv"
 SQLF = "tfc.sqlite"
 
 #読み出し項目位置(0から数えて)
@@ -42,10 +43,11 @@ class JuchuRead:
         self.read(filename) #必要項目をdataに読み出し
         #self.read_cd(CODEFILE) #CODE マスターを読み込み
         self.read_sql(SQLF) #CODE マスターを読み込み
-        self.data = data_kako.kako_add(self.data)
-        self.data = data_kako.sum(self.data)
-        self.data = data_kako.check(self.data, self.codes)
+        #self.data = data_kako.kako_add(self.data)
+        #self.data = data_kako.sum(self.data)
+        #self.data = data_kako.check(self.data, self.codes)
         #print('self.data:', self.data)
+        self.save_torikomi(self.data)
         self.save_juchu(self.data)
 
     def read(self, filename):
@@ -96,7 +98,20 @@ class JuchuRead:
 
     def save_juchu(self, data):
         # 書き出し用のファイルを開く
+        data = data_kako.kako_add(self.data)
+        data = data_kako.sum(self.data)
+        data = data_kako.check(self.data, self.codes)
         with open(FILEOUT, "a", encoding="CP932") as out_file:
+            writer = csv.writer(out_file,lineterminator='\n')
+            for row in data:
+                writer.writerow(row)
+
+    def save_torikomi(self, data):
+        # 書き出し用のファイルを開く
+        #self.data = data_kako.kako_add(self.data)
+        #self.data = data_kako.sum(self.data)
+        #self.data = data_kako.check(self.data, self.codes)
+        with open(TORIOUT, "a", encoding="CP932") as out_file:
             writer = csv.writer(out_file,lineterminator='\n')
             for row in data:
                 writer.writerow(row)

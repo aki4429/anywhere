@@ -20,6 +20,7 @@ A_3 = 3 #納期
 A_4 = 4 #受注数
 A_5 = 5 #ok
 A_6 = 6 #id
+A_7 = 7 #obic code
 
 import csv
 import code
@@ -33,6 +34,7 @@ class WriteKako:
         self.fablist = [] #ファブリック変換データ格納用 
         self.codes = [] #TFCコードデータ格納用
         self.read_kako(FILEK) #加工受注データ読み込み
+        #print(self.kakodata)
         self.read_fab(FILEF) #ファブリック変換データ
         self.read_code() #TFCコード読み込み
 
@@ -43,14 +45,14 @@ class WriteKako:
         cur = con.cursor()
         with open(filename, 'r', encoding='CP932') as csvfile:
             reader = csv.reader(csvfile)
-            for row in reader: #品目名,受注伝票№,受注数,id
+            for row in reader: #品目名,受注伝票№,受注数,id,hcode
                 if row[A_6] == '':
                     #print('r6', row[A_0])
                     cur.execute('select id from tfc_code where hcode = ?', (row[A_0],))
                     result = cur.fetchone()[0]
                     row[A_6] = result
 
-                self.kakodata.append([row[A_0], row[A_1], int(row[A_4]), row[A_6]])
+                self.kakodata.append([row[A_0], row[A_1], int(row[A_4]), row[A_6], row[A_7]])
                 #self.kakodata.append(row)
 
         cur.close()
@@ -71,7 +73,7 @@ class WriteKako:
         i=0
         while i < len(df) :
             row = df.iloc[i]
-            cd = code.Code(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) 
+            cd = code.Code(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[11]) 
             self.codes.append(cd)
             i += 1
 
@@ -81,7 +83,7 @@ class WriteKako:
         for data in self.kakodata :
             for code in  self.codes :
                 if data[0] in code.get_hinban() :
-                    code.write_poline(FILEOUT, self.fablist, data[1], data[2])
+                    code.write_poline(FILEOUT, self.fablist, data[1], data[2], data[4])
         
     def write_kako_sql(self):
         #コードDBに接続
@@ -91,13 +93,13 @@ class WriteKako:
         for data in self.kakodata :
             cur.execute('select * from tfc_code where id = ?', (int(data[3]),))
             result = cur.fetchone()
-            self.write_poline(FILEOUT, self.fablist, data[1], data[2], result)
+            self.write_poline(FILEOUT, self.fablist, data[1], data[2], result, data[4] )
             counter += 1
 
         con.close()
         print("{}行のデータを書き込みました".format(counter))
 
-    def write_poline(self, filename, fablist, om, qty, result):
+    def write_poline(self, filename, fablist, om, qty, result, obic):
         poline = []
         poline.append(result[1]) #品番
         poline.append(result[2]) #item
@@ -114,6 +116,10 @@ class WriteKako:
         poline.append("")
         poline.append(result[8]) #vol
         poline.append(result[0]) #id
+        if obic == '':
+            poline.append(result[11]) #obic code
+        else:
+            poline.append(obic) #obic code
         #self.show_poline(poline)
         #print(poline)
         self.save_poline(filename, poline)

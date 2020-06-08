@@ -12,7 +12,7 @@ import readline
 #FILEOUT = "po_lines_keep.csv"
 
 class Code:
-    def __init__(self, hinban, item, description, remarks, unit, u_price, our_item, u_M3):
+    def __init__(self, hinban, item, description, remarks, unit, u_price, our_item, u_M3, hcode):
         self.fields={}
         self.fields["品番"] = hinban
         self.fields["item"] = item
@@ -22,6 +22,7 @@ class Code:
         self.fields["u_price"] = u_price
         self.fields["our_item"] = our_item
         self.fields["M3"] = u_M3
+        self.fields["hcode"] = hcode
 
     #1行表示用の関数
     def show_line(self):

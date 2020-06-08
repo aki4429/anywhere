@@ -6,7 +6,7 @@ import os
 #po_line.csvファイルの項目を取り込み操作するクラス。
 
 class Poline:
-    def __init__(self, hinban, item, description, remarks, qty, unit, u_price, b_1, b_2,our_item, b_3, om, b_4, u_M3, code_id = 0):
+    def __init__(self, hinban, item, description, remarks, qty, unit, u_price, b_1, b_2,our_item, b_3, om, b_4, u_M3, code_id = 0, obic =''):
         self.line = []
 
         self.item = item
