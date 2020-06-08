@@ -8,6 +8,7 @@ torikomi_juchu.csv　に追加する。
 import glob
 import openpyxl
 import csv
+import set_counter
 
 #検討表ファイル名取得
 #頭に「検討表」がつく/保存フォルダは podata
@@ -57,11 +58,50 @@ with open('kako_juchu_2.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerows(kako_data)
 
+#変換用ファイルを読み込み
+change = []
+with open('changer.csv') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        change.append(row)
+
+#set counter の開始
+s = set_counter.SetCounter()
+
+
 torikomi_data = [] #torikomi_juchu.csv用データ
 for k, v in orders.items():
     torikomi_line = [''] * 6 #kako_juchu.csv用データ行格納
     torikomi_line[0] = k
     torikomi_line[4] = v
+    s.set(k, v) #set counter で数えておきます。
+
+    #検討表でobicコードが異なるものは変換する。
+    for d in change:
+        if d[0] == k:
+            k= d[1]
+
+    torikomi_line[5] = k.replace('013CH', '013')
     torikomi_data.append(torikomi_line)
 
-print('tori', torikomi_data)
+count = s.count
+for c, q in count.items():
+    torikomi_line = [''] * 6 #kako_juchu.csv用データ行格納
+    torikomi_line[0] = c
+    torikomi_line[1] = 'セット品'
+    torikomi_line[4] = q
+    torikomi_line[5] = c
+    torikomi_data.append(torikomi_line)
+
+
+#print('tori', torikomi_data)
+#torikomi_juchu.csv 読み込み
+with open('torikomi_juchu.csv') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        torikomi_data.append(row)
+
+with open('torikomi_juchu_2.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerows(torikomi_data)
+

@@ -9,6 +9,7 @@ from po_status import PoStatus
 import datetime
 import calendar
 import csv
+import os
 
 #固定定数のindex 書き出し
 HK = 1 #ヘッダ発注区分のindex
@@ -31,18 +32,17 @@ ZK_V = '0' #税率区分の値
 KK_V = '0' #仮単価区分の値
 
 #固定定数項目に定数値を代入する関数
-def put_const(data:list)->list:
-    for line in data:
-        line[HK] = HK_V
-        line[JC] = JC_V
-        line[TANTO] = TANTO_V
-        line[TK] = TK_V
-        line[MK] = MK_V
-        line[SAIKEN] = SAIKEN_V
-        line[ZK] = ZK_V
-        line[KK] = KK_V
+def put_const(line:list)->list:
+    line[HK] = HK_V
+    line[JC] = JC_V
+    line[TANTO] = TANTO_V
+    line[TK] = TK_V
+    line[MK] = MK_V
+    line[SAIKEN] = SAIKEN_V
+    line[ZK] = ZK_V
+    line[KK] = KK_V
 
-    return data
+    return line
 
 #tfc固定定数のindex 書き出し
 SHIIRE = 11 #仕入先コードのindex
@@ -57,14 +57,13 @@ PAYHOW_V = '2007' #支払方法コードの値
 UPRICE_V = '0' #仕入単価の値
 
 #TFC固定定数項目に定数値を代入
-def put_tfcconst(data:list)->list:
-    for line in data:
-        line[SHIIRE] = SHIIRE_V
-        line[SHIHARAI] = SHIHARAI_V
-        line[PAYHOW] = PAYHOW_V
-        line[UPRICE] = UPRICE_V
+def put_tfcconst(line:list)->list:
+    line[SHIIRE] = SHIIRE_V
+    line[SHIHARAI] = SHIHARAI_V
+    line[PAYHOW] = PAYHOW_V
+    line[UPRICE] = UPRICE_V
 
-    return data
+    return line
 
 #PO変数のindex 
 PON = 0 #仮伝票番号のindex
@@ -81,7 +80,7 @@ METD_3 = 222 #明細仕入先納品日のindex
 p = PoStatus()
 podata = p.joho #id, pon pod, etd, delivery from po
 pon_v = podata[1]
-pondate_v = podata[2]
+podate_v = podata[2].replace('-','/')
 if podata[4] != None and podata[4] != '--':
     etd_v = podata[4].replace('-','/')
 else:
@@ -93,16 +92,18 @@ def monthend(datedata:str, daysafter:int)->str:
     dt = dt.replace(day=calendar.monthrange(dt.year, dt.month)[1])
     return dt.strftime('%Y/%m/%d')
 
-def put_podata(data:list)->list:
-    data[PON] =pon_v
-    data[PODATE] = podate_v
-    data[ETD_1] = etd_v
-    data[ETD_2] = etd_v
-    data[METD_3] = etd_v
-    data[METD_1] = etd_v
-    data[METD_2] = etd_v
-    data[METD_3] = etd_v
-    data[PAYDAY] = monthend(etd_v, 90)       #納入日の90日後の月末
+def put_podata(line:list)->list:
+    line[PON] =pon_v
+    line[PODATE] = podate_v
+    line[ETD_1] = etd_v
+    line[ETD_2] = etd_v
+    line[METD_3] = etd_v
+    line[METD_1] = etd_v
+    line[METD_2] = etd_v
+    line[METD_3] = etd_v
+    line[PAYDAY] = monthend(etd_v, 90)       #納入日の90日後の月末
+
+    return line
 
 #item変数のindex 
 SOKO_1 = 125 #ヘッダ倉庫コードのindex
@@ -114,16 +115,85 @@ QTY = 208 #明細数量のindex
 U_QTY = 237 #内訳数量のindex
 TEKIYO = 223 #明細摘要
 
+#取込み用データ行を受け取り、row[5] = obic code
+#が 0 から始まる場合は、材料なので、
+#soko = 'A0Z001', POナンバー枝番1 とし、材料行カウント
+#それ以外は、仕入れ品なので、 soko = 'A10000', PO枝番2とし
+#仕入れ品行カウント
+
+#材料の場合
+def zai_val(line:list, row:list, zai_counter:int)->list:
+    line[PON] = line[PON] + '-1'
+    line[SOKO_1] = 'A0Z001'
+    line[SOKO_2] = 'A0Z001'
+    line[M_LINE] = zai_counter
+    line[U_LINE] = zai_counter
+    line[CODE] = row[5]
+    line[QTY] = row[4]
+    line[U_QTY] = row[4]
+    line[TEKIYO] = row[1]
+    return line
+
+#仕入れ品の場合
+def shi_val(line:list, row:list, shi_counter:int)->list:
+    line[PON] = line[PON] + '-2'
+    line[SOKO_1] = 'A10000'
+    line[SOKO_2] = 'A10000'
+    line[M_LINE] = shi_counter
+    line[U_LINE] = shi_counter
+    line[CODE] = row[5]
+    line[QTY] = row[4]
+    line[U_QTY] = row[4]
+    line[TEKIYO] = row[1]
+    return line
+
+#ヘッダ読み込み
+tori_data = []
+with open('toreikomi_headder.csv') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        tori_data.append(row)
+
+
 #データ読み込み
 filename = pon_v + '.csv'
 fullname = os.path.join('./podata', filename)
 
-def read_podata(fullname:str, pon_v)->list:
-    data = []
+def read_podata(fullname:str, pon_v:str)->list:
     if not os.path.isfile(fullname):
         print('{}のデータファイルがありません。'.format(pon_v))
-        return
     else:
-        with open(fullname, fileencoding='CP932') as f:
+        with open(fullname) as f:
             reader = csv.reader(f)
+            zai_counter = 0
+            shi_counter = 0
+            for row in reader:
+                #ラインを初期化しておく。
+                tori_line = [''] * 238
+                tori_line = put_const(tori_line)
+                tori_line = put_tfcconst(tori_line)
+                tori_line = put_podata(tori_line)
+                if row[5].startswith('0'):
+                    zai_counter += 1
+                    tori_line = zai_val(tori_line, row, zai_counter)
+
+                else:
+                    shi_counter += 1
+                    tori_line = shi_val(tori_line, row, shi_counter)
+
+                tori_data.append(tori_line)
+
+        return tori_data
+
+
+
+tori_data = read_podata(fullname, pon_v)
+#データ書き込み
+outfile = pon_v + '_torikomi.csv'
+fullout = os.path.join('./podata', outfile)
+                    
+with open(fullout, 'w', encoding='CP932') as f:
+    writer = csv.writer(f)
+    writer.writerows(tori_data)
+    print("{}を書き込みました".format(fullout))
 
