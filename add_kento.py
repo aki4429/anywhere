@@ -82,6 +82,8 @@ for k, v in orders.items():
             k= d[1]
 
     torikomi_line[5] = k.replace('013CH', '013')
+    torikomi_line[5] = k.replace('232WI', '232W')
+    torikomi_line[5] = k.replace('271I', '271')
     torikomi_data.append(torikomi_line)
 
 count = s.count
