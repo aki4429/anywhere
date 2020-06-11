@@ -98,9 +98,9 @@ class JuchuRead:
 
     def save_juchu(self, data):
         # 書き出し用のファイルを開く
-        data = data_kako.kako_add(self.data)
-        data = data_kako.sum(self.data)
-        data = data_kako.check(self.data, self.codes)
+        data = data_kako.kako_add(data)
+        data = data_kako.sum(data)
+        data = data_kako.check(data, self.codes)
         with open(FILEOUT, "a", encoding="CP932") as out_file:
             writer = csv.writer(out_file,lineterminator='\n')
             for row in data:

@@ -1,7 +1,8 @@
 # vim:fileencoding=utf-8
 
 """
-po_lines_keep.csv を読み込んで
+DB のPOデータを指定し、podataフォルダの
+取り込み元データ(PONO.csvファイル）を読み込み、
 発注取込み用ファイルを吐き出す
 """
 
