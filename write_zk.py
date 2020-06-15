@@ -22,6 +22,7 @@ from get_kh import read_kh
 from make_balance import MakeBalance
 from index_tool import get_xindex, get_yindex
 
+import get_shouhi_new
 import get_shouhi
 
 def join_data(c_data, k_data):
@@ -150,7 +151,28 @@ def write_kexcel(hyo, kijunbi, nolist):
             codelist.append(row[0])
 
     #消費実績表作成 
-    shouhi_hyo = get_shouhi.make_shouhi(codelist)
+
+    #obic 旧データの消費実績取り出し
+    shouhi_hyo_old = get_shouhi.make_shouhi(codelist)
+    #obic 新データの消費実績取り出し
+    shouhi_hyo_new = get_shouhi_new.make_shouhi(codelist)
+
+    #それぞれのヘッダ行を取り出して
+    h_o = shouhi_hyo_old.pop(0)
+    h_n = shouhi_hyo_new.pop(0)
+    h_line = h_o + h_n[1:] #ヘッダを結合しておく 
+
+    #旧消費データ(2次元配列)の品名が同じ新消費データのデータを
+    #つなげて shouhi_hyo に代入。
+    shouhi_hyo = []
+
+    for row_o in shouhi_hyo_old:
+        for row_n in shouhi_hyo_new:
+            if row_o[0] == row_n[0] :
+                shouhi_hyo.append(row_o + row_n[1:])
+
+    #さっきのヘッダを1行目に置く。
+    shouhi_hyo.insert(0, h_line)
 
     i=0 #1行目からスタート
     ylength = len(shouhi_hyo)

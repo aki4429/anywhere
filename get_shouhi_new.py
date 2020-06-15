@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#オービックの在庫表から、発注検討表作成用に
+#新オービックの在庫表から、発注検討表作成用に
 #消費実績をとりだす。
 
 import csv
@@ -14,7 +14,7 @@ from hinmoku_2 import Hinmoku
 
 from index_tool import get_xindex, get_yindex
 
-JDIR = './jisseki/*.csv'
+JDIR = './jisseki_new/*.csv'
 NNAME = './zaiko_d/nunoji_hinban.csv'
 
 def read_nunohin(filename):
@@ -57,33 +57,42 @@ def read_shouhi():
     filenames = glob.glob(JDIR)
     data=[]
     for filename in filenames:
-        a= filename.split('-')
-        month = a[0][-2:]+a[1][:2]
+        #a= filename.split('-')
+        #month = a[0][-2:]+a[1][:2]
         with open(filename, 'r', encoding='CP932') as csvfile:
             reader = csv.reader(csvfile)
             next(reader)
             for row in reader: 
-                if row[9] == "南濃倉庫" and row[11] == "通常":
-                #品目コード6, 品目名7, 当月出庫18, 在庫場所 9, 在庫状態 11
-                    if row[6].startswith('0') :
-                        #商品コードが０で始まるものは材料なのでキーは品目コード
-                        data.append([month, row[6], int(float(row[18]))])
-                    else: 
-                        #商品はキーは品目名
-                        row[7] = rep_nuno(row[7]) #布地コード読替え
-                        h = Hinmoku(bunkai(row[7]))
-                        if not h.is_byorder():
-                            data.append([month, h.make_code(), int(float(row[18]))])
+                #会計年月8, 商品コード17, 規格19, 売上数43, 出庫数46,
+                month = row[8][2:]
+                if row[17].startswith('0') :
+                    #商品コードが０で始まるものは材料なので商品コード+出庫数
+                    old_code = row[17].replace('013', '013CH')
+                    old_code = old_code.replace('013CH232W', '013CH232WI')
+                    old_code = old_code.replace('013CH232WI-35', '013CH232W-35')
+                    old_code = old_code.replace('013CH232WI-37', '013CH232W-37')
+                    old_code = old_code.replace('013CH271-', '013CH271I-')
+                    old_code = old_code.replace('013CH271I-35', '013CH271-35')
+                    old_code = old_code.replace('013CH271I-37', '013CH271-37')
+                    old_code = old_code.replace('014CH271N', '014CH271E')
+                    data.append([month, old_code, int(float(row[46]))])
+                else: 
+                    #商品は規格+売上数
+                    row[19] = rep_nuno(row[19]) #布地コード読替え
+                    h = Hinmoku(bunkai(row[19]))
+                    if not h.is_byorder():
+                        data.append([month, h.make_code(), int(float(row[43]))])
 
     data.sort()
     return data
 
 #data = read_nunohin(NNAME)
+
 #data = read_shouhi()
 #print(data)
 
 def make_monthlist():
-    files = os.listdir('jisseki')
+    files = os.listdir('jisseki_new')
     monthlist = []
     for f in files:
         monthlist.append( f.split('-')[0][-2:]+f.split('-')[1][:2])
@@ -91,6 +100,8 @@ def make_monthlist():
     monthlist.sort()
 
     return monthlist
+
+#print(make_monthlist())
 
 def make_shouhi(codelist):
     monthlist = make_monthlist()
@@ -113,10 +124,10 @@ def make_shouhi(codelist):
                 and get_xindex(shouhi_hyo, row[0]) is not None :
             shouhi_hyo[get_yindex(shouhi_hyo, row[1])][get_xindex(shouhi_hyo, row[0])] = row[2]
 
-    with open('shouhi_hyo.csv', 'w', encoding='CP932') as f:
+    with open('shouhi_hyo_new.csv', 'w', encoding='CP932') as f:
         writer = csv.writer(f)
         writer.writerows(shouhi_hyo)
-        print('shouhi_hyo.csv を書きました。')
+        print('shouhi_hyo_new.csv を書きました。')
 
     return shouhi_hyo
 
