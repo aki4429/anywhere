@@ -22,7 +22,7 @@ if ans == 'n':
 wb = openpyxl.load_workbook(kento_name)
 sheet = wb['kento']
 
-#行列番号は1始まり、Row 5から、Col 2=コード、25=今回発注
+#行列番号は1始まり、Row 5から、Col 2=コード、25=(Y列)今回発注
 #発注辞書に保存
 orders = {}
 
@@ -30,9 +30,11 @@ i=0
 while((i+5) <=400):
     code = sheet.cell(row=i+5, column=2).value
     qty = sheet.cell(row=i+5, column=25).value
+    #qty = sheet.cell(row=i+5, column=24).value
     #print(type(qty), qty, not qty)
 
     if qty :
+        #print('code;', code, 'qty', qty)
         orders[code] = qty
 
     i += 1
@@ -49,12 +51,12 @@ for k, v in orders.items():
     kako_data.append(kako_line)
 
 #kako_juchu.csv 読み込み
-with open('kako_juchu.csv') as f:
+with open('kako_juchu.csv', encoding='CP932') as f:
     reader = csv.reader(f)
     for row in reader:
         kako_data.append(row)
 
-with open('kako_juchu_2.csv', 'w') as f:
+with open('kako_juchu_2.csv', 'w', encoding='CP932') as f:
     writer = csv.writer(f)
     writer.writerows(kako_data)
 
@@ -98,12 +100,12 @@ for c, q in count.items():
 
 #print('tori', torikomi_data)
 #torikomi_juchu.csv 読み込み
-with open('torikomi_juchu.csv') as f:
+with open('torikomi_juchu.csv', encoding='CP932') as f:
     reader = csv.reader(f)
     for row in reader:
         torikomi_data.append(row)
 
-with open('torikomi_juchu_2.csv', 'w') as f:
+with open('torikomi_juchu_2.csv', 'w', encoding='CP932') as f:
     writer = csv.writer(f)
     writer.writerows(torikomi_data)
 

@@ -165,6 +165,7 @@ def read_podata(fullname:str, pon_v:str)->list:
         print('{}のデータファイルがありません。'.format(pon_v))
     else:
         with open(fullname, encoding='CP932') as f:
+        #with open(fullname) as f:
             reader = csv.reader(f)
             zai_counter = 0
             shi_counter = 0

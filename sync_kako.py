@@ -14,6 +14,7 @@ filename = select_file.select_file('kako', '.', 'csv')
 
 #加工ファイルを読んで、受注NO.リスト(row[1])のユニークリスト
 with open(filename, encoding='CP932') as f:
+#with open(filename) as f:
     reader = csv.reader(f)
     jucs = []
     for row in reader:
@@ -30,6 +31,7 @@ targetfile = select_file.select_file('torikomi', '.', 'csv')
 #確認します。
 counter = 0
 with open(targetfile, encoding='CP932') as f:
+#with open(targetfile) as f:
     reader = csv.reader(f)
     sync_list = []
     for row in reader:

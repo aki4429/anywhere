@@ -47,10 +47,12 @@ def join_data(c_data, k_data):
 def make_hyo(nolist, codelist, totallist):
     l = len(codelist[0])
     hyo = [['' for i in range(len(nolist)+l)] for j in range(len(codelist)+3)]
+    #print('hyo', hyo)
     #先頭列にコードデータを代入
     for i, code in enumerate(codelist):
         hyo[i+3][:0] = code
 
+    #print('hyo_withcode', hyo)
     #１行目にINV no. PO no. を代入
     for i, num in enumerate(nolist):
         hyo[0][i+l] = num[2]
@@ -63,14 +65,26 @@ def make_hyo(nolist, codelist, totallist):
     for i, num in enumerate(nolist):
         hyo[2][i+l] = num[0]
 
+    #print('hyo_final', hyo)
+    with open('hyo_final.csv', 'w', encoding='CP932') as f:
+        writer = csv.writer(f)
+        writer.writerows(hyo)
+
+    print('hyo_final.csv を書き出しました。')
+
     for row in totallist: #着日, etd, PO No. コード　残数
         yindex = get_yindex(hyo, row[3])
-        #print('row[3]=', row[3], row[0], row[1], row[2], row[4])
+        #print('row[3]=', row[3], row[0], row[1], row[2], row[4], yindex)
         #if yindex == 0:
-        #    print('row[3]=', row[3], row[0], row[1], row[2], row[4])
+            #print('yindex0=', row[3], row[0], row[1], row[2], row[4])
 
-        if yindex != None:
+        if yindex != None and yindex > 2: #yindex 行が 0-2 はタイトル行なので飛ばす。
+            #print('index', yindex, row[2], row[4])
             hyo[yindex][get_xindex(hyo, row[2])] = row[4]
+
+        elif yindex != None and yindex < 3:
+            print('yindex_<3', yindex, row[2], row[4])
+
 
     return hyo
 
