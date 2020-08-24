@@ -29,8 +29,8 @@ orders = {}
 i=0
 while((i+5) <=400):
     code = sheet.cell(row=i+5, column=2).value
-    qty = sheet.cell(row=i+5, column=25).value
-    #qty = sheet.cell(row=i+5, column=24).value
+    #qty = sheet.cell(row=i+5, column=25).value  #Y
+    qty = sheet.cell(row=i+5, column=24).value  #X
     #print(type(qty), qty, not qty)
 
     if qty :
