@@ -46,7 +46,7 @@ class PoStatus:
         #cur.execute("select id, etd, pon, per, port,comment, pod from po order by etd")
         res = cur.fetchall()
         #res = res[-15:] #最新のデータ○行まで表示
-        res = res[-30:] #最新のデータ○行まで表示
+        res = res[-150:] #最新のデータ○行まで表示
         for row in res:
             cur.execute("select c.uprice * p.qty from poline p inner join tfc_code c on p.code_id = c.id where p.po_id = ?", (row[0],))
             prices = cur.fetchall()

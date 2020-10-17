@@ -89,7 +89,8 @@ def read_kh():
                 #1で始まる余計な材料コードは除く
                 row[12] = rep_nuno(row[12]) #布地コード読替え
                 h = Hinmoku(bunkai(row[12]))
-                if not h.is_byorder():
+                if h.is_kansei() or not h.is_byorder():
+                #if h.is_kansei() :
                     data.append([h.make_code(), int(float(row[17]))-int(float(row[20])),
                     int(float(row[126]))-int(float(row[20]))])
 
@@ -100,6 +101,7 @@ def read_kh():
 
 #data = read_nunohin(NNAME)
 
+#data = read_kh()[0]
 #data = read_kh()[0]
 #data.sort()
 #for row in data:

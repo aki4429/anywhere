@@ -46,6 +46,12 @@ class Hinmoku:
         else:
             return False
 
+    #完成品在庫モデルだったらTrue
+    def is_kansei(self):
+        if self.hin.startswith('CH271') and self.nu1=='SP/183':
+            return True
+        else:
+            return False
 
     #バイオーダーの判定(Zがtok(特注)に含まれるか
     def is_byorder(self):
