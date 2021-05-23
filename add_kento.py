@@ -30,9 +30,10 @@ i=0
 while((i+5) <=600):
     code = sheet.cell(row=i+5, column=2).value
     #qty = sheet.cell(row=i+5, column=26).value  #Z
-    qty = sheet.cell(row=i+5, column=25).value  #Y
+    #qty = sheet.cell(row=i+5, column=25).value  #Y
     #qty = sheet.cell(row=i+5, column=24).value  #X
-    #qty = sheet.cell(row=i+5, column=22).value  #V
+    qty = sheet.cell(row=i+5, column=22).value  #V
+    #qty = sheet.cell(row=i+5, column=23).value  #W
     #print(type(qty), qty, not qty)
 
     if qty :

@@ -109,4 +109,10 @@ def read_kh():
 
 #print(read_kh()[1])
 #print(row[0], row[1])
+data, kijunbi = read_kh()
+#print('data', data)
+print('kijunbi', kijunbi)
+with open('kh_data.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerows(data)
 

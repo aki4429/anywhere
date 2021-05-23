@@ -10,7 +10,7 @@ engine = create_engine('sqlite:///tfc.sqlite')
 
 Base = declarative_base()
 
-CAT_ORDER = {'布地':1,'ﾇｰﾄﾞ':2,'ｶﾊﾞｰ':3,'INCOON':4, 'INCOON BED':5, '脚':6,'バネ':7, 'ｸｯｼｮﾝ':8, 'HYPERFLEX':9,'ﾛｻﾞｰﾅ':10, '旧モデル':11, '':12}
+CAT_ORDER = {'NEW':0, '布地':1,'ﾇｰﾄﾞ':2,'ｶﾊﾞｰ':3,'INCOON':4, 'INCOON BED':5, '脚':6,'バネ':7, 'ｸｯｼｮﾝ':8, 'HYPERFLEX':9,'ﾛｻﾞｰﾅ':10, '旧モデル':11, '':12}
 
 class TfcCode(Base):
     __tablename__ = 'tfc_code'

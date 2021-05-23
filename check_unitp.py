@@ -5,6 +5,7 @@
 #はき出す
 
 SEARCH_PATH = "./tanka/*.xls"
+#SEARCH_PATH = "./tanka/*201222*.xls"
 
 import csv
 import xlrd
@@ -22,7 +23,7 @@ print('file_name:', file_name)
 #
 #file_name = "./tanka/TI191116C_HAKATA.xls"
 #file_name = "./tanka/TI191212B_FUGUE.xls"
-#file_name = "./tanka/TI191123C_FUGUE.xls"
+#file_name = "./tanka/TI210126A_FUGUE.xls"
 
 
 result_filename = file_name.replace("xls", "result.csv")

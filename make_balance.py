@@ -39,7 +39,7 @@ class MakeBalance:
 
         #po内容情報の取得/フクラ南濃向けバイオーダー除く
         #id, 着日, etd, PO No. コード　残数
-        cur.execute("select o.id, p.delivery, p.etd, p.pon, c.hcode, o.balance from ((poline o inner join po p on o.po_id = p.id) inner join tfc_code c on o.code_id = c.id) where p.delivery > ? and p.comment = 'To Hukla Japan/Nanno ' and o.om = ''", (maxdeli, ))
+        cur.execute("select o.id, p.delivery, p.etd, p.pon, c.hcode, o.balance from ((poline o inner join po p on o.po_id = p.id) inner join tfc_code c on o.code_id = c.id) where p.delivery > ? and p.comment like '%Nanno%' and o.om = ''", (maxdeli, ))
 
         polines = cur.fetchall()
         #polines.sort()

@@ -99,6 +99,8 @@ class Hinmoku:
             return True
         elif self.hin.startswith("T523"):
             return True
+        elif self.hin.startswith("T565"):
+            return True
         elif self.hin.startswith("TDS"):
             return True
         elif self.hin.startswith("X"):
@@ -143,6 +145,13 @@ class Hinmoku:
         #CH1071の、脚色NAはDBに変える
         if "CH1071" in self.hin :
             self.iro = self.iro.replace("NA", "DB")
+
+        #CH1145 は 仕様に SS があれば、S SHがあれば、Hをつい生き
+        if "CH1145" in self.hin :
+            if "SS" in self.shi :
+                code = self.hin + "S"
+            elif "SH" in self.shi :
+                code = self.hin + "H"
 
         #パーツフィールドに"C"があれば、ピース末尾にCをつける
         if "C" in self.par :
